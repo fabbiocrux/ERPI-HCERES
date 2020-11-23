@@ -1,0 +1,181 @@
+---
+title: "HCERES ERPI"
+description: |
+  Production de connaissances et activités concourant au rayonnement et à l’attractivité scientifique.
+author:
+  - first_name: "Mauricio"
+    last_name: "Camargo"
+    url: https://erpi.univ-lorraine.fr/people/Mauricio-Camargo/
+    affiliation: ERPI
+    affiliation_url: https://erpi.univ-lorraine.fr/
+    orcid_id: 0000-0003-3867-2438 
+    
+  - first_name: "Fréderique"
+    last_name: "Mayer"
+    url: https://erpi.univ-lorraine.fr/people/Frederique-Mayer/
+    affiliation: ERPI
+    affiliation_url: https://erpi.univ-lorraine.fr/
+    orcid_id: 
+  - first_name: "Eric"
+    last_name: "Bonjour"
+    url: https://erpi.univ-lorraine.fr/people/Eric-Bonjour/
+    affiliation: ERPI
+    affiliation_url: https://erpi.univ-lorraine.fr/
+    orcid_id: 0000-0001-7851-1095 
+  - first_name: "Manon"
+    last_name: "Enjolras"
+    url: https://erpi.univ-lorraine.fr/people/Manon-Enjolras/
+    affiliation: ERPI
+    affiliation_url: https://erpi.univ-lorraine.fr/
+    orcid_id: 0000-0003-4570-1989
+        
+  - first_name: "Fabio"
+    last_name: "Cruz"
+    url: https://erpi.univ-lorraine.fr/people/Fabio-Cruz/
+    affiliation: ERPI
+    affiliation_url: https://erpi.univ-lorraine.fr/
+    orcid_id: 0000-0001-8529-5327
+
+date: "`r Sys.Date()`"
+output: distill::distill_article
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(tidyverse)
+require(knitr)
+require(kableExtra)
+```
+
+
+# Critères d'evaluation
+
+```{r, layout="l-body-outset", captio}
+
+Criteria <- tribble(
+  ~Type,  ~Production,
+  "Articles scientifiques", "71",
+  "Articles de sythèse / revues bibliographiques", "",
+  "Autres articles (articles publiés dans des revues professionnelles ou techniques, etc)", " ",
+  
+  "Monographies, éditions critiques, traductions", " ",
+  "Direction et coordination d'ouvrages scientifiques / édition scientifique", " ",
+  "Direction et coordination d'ouvrages scientifiques / édition scientifique en anglais ou dans une autre langue étrangère", " ",
+  "Chapitres d'ouvrage", " ",
+  "Chapitres d'ouvrages en anglais ou dans une autre langue étrangère", " ",
+  "Thèse éditées", "16",
+  "Editions d'actes de colloques / congrès", "",
+  "Articles publiés dans des actes de colloques / congrès", "81",
+  "Autres produits présentés dans des colloques / congrès et des séminaires de recherche", "",
+  
+  "Logiciels", "",
+  "Base de données", "",
+  "Outils d'aide à la désicion", "",
+  "Cohortes", "",
+  
+  
+  "Prototypes et démostrateurs", "",
+  "Plateformes et observatoires", "",
+  
+  "Créations artistiques théorisées, mises en scènes, films", "",
+  
+  "Participation à des comités éditoriaux (journaux scientifiques, revues, collections, etc)", "",
+  "Direction de collection et de séries", "",
+  
+  "Evaluation d'articles et d'ouvrages scientifiques (relecture d'articles / reviewing)", ""
+  
+)
+
+```
+
+```{r, layout="l-body-outset"}
+Criteria %>% 
+  kbl( caption = "Indicators for ERPI 2016 - 2020") %>%
+  kable_paper("hover", full_width = F) %>% 
+  pack_rows("Journaux / revues", 1, 3) %>%
+  pack_rows("Ouvrages", 4, 9) %>%
+  pack_rows("Production dans des colloques / congrès, séminaires de recherche", 10, 12) %>%
+  pack_rows("Produits et outils informatiques", 13, 16) %>%
+  pack_rows("Développements instrumentaux et méthodologiques", 17, 18) %>%
+  pack_rows("Autres produits propres à une discipline", 19, 19) %>%
+  pack_rows("Activités éditoriales", 20, 21) %>%
+  pack_rows("Activités d'évaluation", 22, 22)
+  
+  
+```
+
+
+---
+
+# Database from HAL 2016 - 2020
+
+
+```{r}
+HAL <- read.csv("HAL/HAL-total.csv") %>% as_tibble() %>% select(-subTitle_s)
+
+# Total data
+HAL <- HAL %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Language")
+
+HAL <- HAL %>% filter(Year >= 2016)
+
+write.csv2(HAL, "HAL/HAL-2016-2020.csv")
+
+
+```
+
+
+## Production scientifique
+
+```{r}
+Articles <- HAL %>% filter(Type.document == "ART" | Type.document == "COMM" | Type.document == "THESE")
+```
+
+
+```{r, layout="l-body-outset", fig.width=8, fig.height=4}
+
+# Total of articles
+# Articles %>% group_by(Type.document) %>% tally(name = "Quantity") 
+
+Articles %>% group_by(Year, Type.document) %>% tally(name = "Quantity") %>% 
+  ggplot(aes(x=Year, y=Quantity, color = Type.document )) +
+  geom_line() + geom_point() +
+  labs(x="Années", y="Nombre des documents", title = "Production scientifique ERPI", subtitle = "Articles, Conferences  et Thèses doctorat") +
+  scale_colour_discrete(name  ="Type de document",
+                            breaks=c("ART", "COMM", "THESE"),
+                            labels=c("Articles", "Conferences", "Phd Thèses")) +
+      # scale_shape_discrete(name  ="Type de document",
+      #                       breaks=c("ART", "COMM", "THESE"),
+      #                       labels=c("Article", "Conferences", "Phd Thèses"))
+  theme_minimal() +
+  theme(axis.text=element_text(size=14, family = "Palatino"),
+        axis.title=element_text(size=16,face="bold", family = "Palatino"),legend.position="right")+
+  theme(plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)) +
+  coord_cartesian(ylim = c(0, 25))
+  
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
