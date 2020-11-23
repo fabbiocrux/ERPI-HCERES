@@ -37,7 +37,8 @@ author:
     orcid_id: 0000-0001-8529-5327
 
 date: "`r Sys.Date()`"
-output: distill::distill_article
+#output: distill::distill_article
+site: distill::distill_website
 editor_options: 
   chunk_output_type: console
 ---
