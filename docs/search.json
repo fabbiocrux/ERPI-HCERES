@@ -1,0 +1,43 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this site",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2020-11-23T18:17:43+01:00"
+    },
+    {
+      "path": "index.html",
+      "title": "HCERES ERPI",
+      "description": "Production de connaissances et activités concourant au rayonnement et à l’attractivité scientifique.\n",
+      "author": [
+        {
+          "name": {},
+          "url": "https://erpi.univ-lorraine.fr/people/Mauricio-Camargo/"
+        },
+        {
+          "name": {},
+          "url": "https://erpi.univ-lorraine.fr/people/Frederique-Mayer/"
+        },
+        {
+          "name": {},
+          "url": "https://erpi.univ-lorraine.fr/people/Eric-Bonjour/"
+        },
+        {
+          "name": {},
+          "url": "https://erpi.univ-lorraine.fr/people/Manon-Enjolras/"
+        },
+        {
+          "name": {},
+          "url": "https://erpi.univ-lorraine.fr/people/Fabio-Cruz/"
+        }
+      ],
+      "date": "`r Sys.Date()`",
+      "contents": "\n\nContents\nCritères d’evaluation\nDatabase from HAL 2016 - 2020\nProduction scientifique\n\n\nCritères d’evaluation\n\n\n\n\n\nTable 1: Indicators for ERPI 2016 - 2020\n\n\nType\n\n\nProduction\n\n\nJournaux / revues\n\n\nArticles scientifiques\n\n\n71\n\n\nArticles de sythèse / revues bibliographiques\n\n\n\n\nAutres articles (articles publiés dans des revues professionnelles ou techniques, etc)\n\n\n\n\nOuvrages\n\n\nMonographies, éditions critiques, traductions\n\n\n\n\nDirection et coordination d’ouvrages scientifiques / édition scientifique\n\n\n\n\nDirection et coordination d’ouvrages scientifiques / édition scientifique en anglais ou dans une autre langue étrangère\n\n\n\n\nChapitres d’ouvrage\n\n\n\n\nChapitres d’ouvrages en anglais ou dans une autre langue étrangère\n\n\n\n\nThèse éditées\n\n\n16\n\n\nProduction dans des colloques / congrès, séminaires de recherche\n\n\nEditions d’actes de colloques / congrès\n\n\n\n\nArticles publiés dans des actes de colloques / congrès\n\n\n81\n\n\nAutres produits présentés dans des colloques / congrès et des séminaires de recherche\n\n\n\n\nProduits et outils informatiques\n\n\nLogiciels\n\n\n\n\nBase de données\n\n\n\n\nOutils d’aide à la désicion\n\n\n\n\nCohortes\n\n\n\n\nDéveloppements instrumentaux et méthodologiques\n\n\nPrototypes et démostrateurs\n\n\n\n\nPlateformes et observatoires\n\n\n\n\nAutres produits propres à une discipline\n\n\nCréations artistiques théorisées, mises en scènes, films\n\n\n\n\nActivités éditoriales\n\n\nParticipation à des comités éditoriaux (journaux scientifiques, revues, collections, etc)\n\n\n\n\nDirection de collection et de séries\n\n\n\n\nActivités d’évaluation\n\n\nEvaluation d’articles et d’ouvrages scientifiques (relecture d’articles / reviewing)\n\n\n\n\nDatabase from HAL 2016 - 2020\n\n\n\nProduction scientifique\n\n\n\n\n\n\n\n\n\n",
+      "last_modified": "2020-11-23T18:17:47+01:00"
+    }
+  ],
+  "collections": []
+}
