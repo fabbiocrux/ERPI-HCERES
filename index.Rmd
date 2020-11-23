@@ -47,6 +47,7 @@ knitr::opts_chunk$set(echo = FALSE)
 require(tidyverse)
 require(knitr)
 require(kableExtra)
+
 ```
 
 
@@ -120,9 +121,10 @@ HAL <- HAL %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Yea
 
 HAL <- HAL %>% filter(Year >= 2016)
 
-write.csv2(HAL, "HAL/HAL-2016-2020.csv")
 
-
+#write.csv2(HAL, "HAL/HAL-2016-2020.csv")
+#write_csv2(HAL, "HAL/HAL-2016-2020.csv")
+#write_excel_csv2(HAL, "HAL/HAL-2016-2020-excel.csv")
 ```
 
 
