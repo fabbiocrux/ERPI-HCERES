@@ -3,13 +3,13 @@ title: "HCERES ERPI"
 description: |
   Production de connaissances et activités concourant au rayonnement et à l’attractivité scientifique.
 author:
+    
   - first_name: "Mauricio"
     last_name: "Camargo"
     url: https://erpi.univ-lorraine.fr/people/Mauricio-Camargo/
     affiliation: ERPI
     affiliation_url: https://erpi.univ-lorraine.fr/
     orcid_id: 0000-0003-3867-2438 
-    
   - first_name: "Fréderique"
     last_name: "Mayer"
     url: https://erpi.univ-lorraine.fr/people/Frederique-Mayer/
@@ -35,7 +35,6 @@ author:
     affiliation: ERPI
     affiliation_url: https://erpi.univ-lorraine.fr/
     orcid_id: 0000-0001-8529-5327
-
 date: "`r Sys.Date()`"
 #output: distill::distill_article
 site: distill::distill_website
@@ -48,6 +47,7 @@ knitr::opts_chunk$set(echo = FALSE)
 require(tidyverse)
 require(knitr)
 require(kableExtra)
+require(DT)
 
 ```
 
@@ -114,18 +114,58 @@ Criteria %>%
 # Database from HAL 2016 - 2020
 
 
-```{r}
+```{r, include=FALSE}
+# Data HAL ----
 HAL <- read.csv("HAL/HAL-total.csv") %>% as_tibble() %>% select(-subTitle_s)
 
-# Total data
+## Total data
 HAL <- HAL %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Language")
 
+## Filtering 2016 and tolower
 HAL <- HAL %>% filter(Year >= 2016)
-
+HAL$Journal = tolower(HAL$Journal)
 
 #write.csv2(HAL, "HAL/HAL-2016-2020.csv")
 #write_csv2(HAL, "HAL/HAL-2016-2020.csv")
 #write_excel_csv2(HAL, "HAL/HAL-2016-2020-excel.csv")
+
+# Scimago ----
+
+## Engineering
+Engineering.Scimago <- read.csv2("HAL/Scimago/Engineering.csv") %>%  select(Title, SJR.Best.Quartile)
+Engineering.Scimago <-  Engineering.Scimago %>% set_names("Journal", "Scimago.Engineering")
+Engineering.Scimago$Journal = tolower(Engineering.Scimago$Journal)
+
+
+## Decision Science
+DS.Scimago <- read.csv2("HAL/Scimago/Decision-sciences.csv") %>%  select(Title, SJR.Best.Quartile)
+DS.Scimago <-  DS.Scimago %>% set_names("Journal", "Scimago.Decision.Sciences")
+DS.Scimago$Journal = tolower(DS.Scimago$Journal)
+
+
+
+# ERPI PUblications
+ERPI <- left_join(HAL, Engineering.Scimago, by="Journal" )
+ERPI <- left_join(ERPI, DS.Scimago, by="Journal" )
+
+ERPI <- ERPI %>% select(Year,Type.document , Title, Authors, DOI, Journal, Scimago.Engineering, Scimago.Decision.Sciences  , Publisher, Conference,Language ,  Url)
+
+ERPI <- ERPI %>%arrange(desc(Year), Type.document)
+
+names(ERPI)
+
+#write_excel_csv2(ERPI, "HAL/ERPI-2016-2020.csv")
+```
+
+
+
+```{r, include=TRUE, layout="l-screen-inset"}
+ERPI %>% select(Year, Type.document, Title, Authors, Journal, Scimago.Engineering, Scimago.Decision.Sciences) %>% 
+  datatable(. ,  options = list(
+  pageLength = 2,
+  lengthMenu = c(5, 10, 15, 20)
+))  %>% 
+  DT::formatStyle(columns = colnames(.), fontSize = '12pt')
 ```
 
 
