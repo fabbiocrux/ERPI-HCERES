@@ -133,13 +133,13 @@ HAL$Journal = tolower(HAL$Journal)
 
 ## Engineering
 Engineering.Scimago <- read.csv2("HAL/Scimago/Engineering.csv") %>%  select(Title, SJR.Best.Quartile, H.index)
-Engineering.Scimago <-  Engineering.Scimago %>% set_names("Journal", "Scimago<br/>Engineering", "H Factor")
+Engineering.Scimago <-  Engineering.Scimago %>% set_names("Journal", "Scimago<br/>Engineering", "H.Factor")
 Engineering.Scimago$Journal = tolower(Engineering.Scimago$Journal)
 
 
 ## Decision Science
 DS.Scimago <- read.csv2("HAL/Scimago/Decision-sciences.csv") %>%  select(Title, SJR.Best.Quartile, H.index)
-DS.Scimago <-  DS.Scimago %>% set_names("Journal", "Scimago<br/>Decision<br/>Sciences", "H Factor")
+DS.Scimago <-  DS.Scimago %>% set_names("Journal", "Scimago<br/>Decision<br/>Sciences", "H.Factor")
 DS.Scimago$Journal = tolower(DS.Scimago$Journal)
 
 
@@ -148,7 +148,13 @@ DS.Scimago$Journal = tolower(DS.Scimago$Journal)
 ERPI <- left_join(HAL, Engineering.Scimago, by="Journal" )
 ERPI <- left_join(ERPI, DS.Scimago, by="Journal" )
 
-ERPI <- ERPI %>% select(Year,Type.document , Title, Authors, DOI, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences' , Publisher, Conference,Language ,  Url)
+
+## H factor
+ERPI <-  ERPI %>% mutate(H.Factor = coalesce(H.Factor.x, H.Factor.y))
+
+
+ERPI <- ERPI %>% select(Year,Type.document , Title, Authors, DOI, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences' , Publisher, Conference,Language ,  Url, H.Factor)
+
 
 ERPI <- ERPI %>%arrange(desc(Year), Type.document)
 
@@ -160,7 +166,7 @@ names(ERPI)
 
 
 ```{r, include=TRUE, layout="l-screen-inset"}
-ERPI %>% select(Year, Type.document, Title, Authors, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences') %>% 
+ERPI %>% select(Year, Type.document, Title, Authors, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences', H.Factor) %>% 
   datatable(. , escape = FALSE ,  options = list(
   pageLength = 1,
   lengthMenu = c(1, 5, 10, 15, 20)
