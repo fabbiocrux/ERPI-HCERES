@@ -113,10 +113,18 @@ Criteria %>%
 
 # Database from HAL 2016 - 2020
 
+Last update from HAL:  "`r format(Sys.time(), '%d %B, %Y')`"
+
 
 ```{r, include=FALSE}
 # Data HAL ----
-HAL <- read.csv("HAL/HAL-total.csv") %>% as_tibble() %>% select(-subTitle_s)
+HAL <- read.csv("HAL/HAL-total2.csv") %>% 
+  as_tibble() %>% 
+  select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
+
+
+
+## Selecting the rubrics
 
 ## Total data
 HAL <- HAL %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Language")
@@ -175,11 +183,17 @@ ERPI %>% select(Year, Type.document, Title, Authors, Journal, 'Scimago<br/>Engin
 ```
 
 
-## Production scientifique
+## Evolution of ERPI's Scientific production
+
+
 
 ```{r}
 Articles <- HAL %>% filter(Type.document == "ART" | Type.document == "COMM" | Type.document == "THESE")
 ```
+
+
+
+
 
 
 ```{r, layout="l-body-outset", fig.width=8, fig.height=4}
