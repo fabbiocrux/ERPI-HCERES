@@ -58,7 +58,7 @@ require(DT)
 
 Criteria <- tribble(
   ~Type,  ~Production,
-  "Articles scientifiques", "71",
+  "Articles scientifiques", "77",
   "Articles de sythèse / revues bibliographiques", "",
   "Autres articles (articles publiés dans des revues professionnelles ou techniques, etc)", " ",
   
@@ -185,13 +185,9 @@ ERPI %>% select(Year, Type.document, Title, Authors, Journal, 'Scimago<br/>Engin
 ## Evolution of ERPI's Scientific production
 
 
-
 ```{r}
 Articles <- HAL %>% filter(Type.document == "ART" | Type.document == "COMM" | Type.document == "THESE")
 ```
-
-
-
 
 
 
@@ -222,17 +218,62 @@ Articles %>% group_by(Year, Type.document) %>% tally(name = "Quantity") %>%
 
 
 
+## Quartiles of the Publications
 
 
+```{r}
+Publications <- 
+  ERPI %>% filter(Type.document == "ART"  ) %>%  filter(Year >= 2016 & Year <= 2020 )
+
+```
+
+### Scimago Engineering
+
+```{r, layout="l-body-outset", fig.width=8, fig.height=4}
+Publications %>% group_by(Year, `Scimago<br/>Engineering`) %>% tally(name = "Quantity") %>% 
+  ggplot(aes(x=Year, y=Quantity, color = `Scimago<br/>Engineering` )) +
+  geom_line() + geom_point() +
+  labs(x="Années", y="Nombre des documents \n QuArtiles", title = "Production scientifique ERPI", subtitle = "Articles") +
+  scale_colour_discrete(name  = "Scimago (Engineering)" ) +
+
+                            #breaks=c("Q1", "Q2", "NA"),
+                            #labels=c("Q1", "Q2", "à Identifier")) +
+      # scale_shape_discrete(name  ="Type de document",
+      #                       breaks=c("ART", "COMM", "THESE"),
+      #                       labels=c("Article", "Conferences", "Phd Thèses"))
+  theme_minimal() +
+  theme(axis.text=element_text(size=14, family = "Palatino"),
+        axis.title=element_text(size=16,face="bold", family = "Palatino"),legend.position="right")+
+  theme(plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)) +
+  coord_cartesian(ylim = c(0, 25))
+  
+```
+
+`NA` signiife que on l'article n'est pas reporte dans les Q's sur ce section de Scimago.
+
+### Scimago Desicion Sciences
+
+```{r, layout="l-body-outset", fig.width=8, fig.height=4}
 
 
+Publications %>% group_by(Year, `Scimago<br/>Decision<br/>Sciences`) %>% tally(name = "Quantity") %>% 
+  ggplot(aes(x=Year, y=Quantity, color = `Scimago<br/>Decision<br/>Sciences` )) +
+  geom_line() + geom_point() +
+  labs(x="Années", y="Nombre des documents \n QuArtiles", title = "Production scientifique ERPI", subtitle = "Articles") +
+  scale_colour_discrete(name  = "Scimago (Desicion Sciences)" ) +
 
-
-
-
-
-
-
+                            #breaks=c("Q1", "Q2", "NA"),
+                            #labels=c("Q1", "Q2", "à Identifier")) +
+      # scale_shape_discrete(name  ="Type de document",
+      #                       breaks=c("ART", "COMM", "THESE"),
+      #                       labels=c("Article", "Conferences", "Phd Thèses"))
+  theme_minimal() +
+  theme(axis.text=element_text(size=14, family = "Palatino"),
+        axis.title=element_text(size=16,face="bold", family = "Palatino"),legend.position="right")+
+  theme(plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)) +
+  coord_cartesian(ylim = c(0, 25))
+  
+```
 
 
 
