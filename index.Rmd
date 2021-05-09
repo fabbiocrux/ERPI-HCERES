@@ -118,8 +118,8 @@ Last update from HAL:  "`r format(Sys.time(), '%d %B, %Y')`"
 
 ```{r, include=FALSE}
 # Data HAL ----
-HAL <- read.csv("HAL/HAL-total2.csv") %>% 
-  as_tibble() %>% 
+
+HAL <- read_csv("HAL/HAL-May-2021.csv") %>% 
   select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
 
 
@@ -165,7 +165,6 @@ ERPI <- ERPI %>% select(Year,Type.document , Title, Authors, DOI, Journal, 'Scim
 
 
 ERPI <- ERPI %>%arrange(desc(Year), Type.document)
-
 names(ERPI)
 
 #write_excel_csv2(ERPI, "HAL/ERPI-2016-2020.csv")
