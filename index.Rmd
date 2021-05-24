@@ -299,13 +299,13 @@ Journaux referencés par Scopus et par annés depuis les publication ERPI
 # Impact Factor
 JCR <- read_csv("JCR/JCR.csv", skip = 1) %>% 
   rename(Journal=`Full Journal Title`,
-         Impact_factor= `Journal Impact Factor`) %>% 
-  select(Journal, Impact_factor)
+         Impact_factor_2019= `Journal Impact Factor`) %>% 
+  select(Journal, Impact_factor_2019)
 JCR$Journal = tolower(JCR$Journal)
 
 
 Revistas <- 
-  HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year)) %>% 
+  HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year)) %>%
     select(Year, Title, Authors, Journal, Scopus)
 
 Revistas <- Revistas %>% left_join(JCR, by= "Journal")
@@ -315,7 +315,7 @@ Revistas <- Revistas %>% left_join(JCR, by= "Journal")
 # library(flextable)
 # flextable(Revistas)
 
-Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor) %>% 
+Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor_2019) %>% 
   kbl( caption = "Articles for ERPI 2016 - 2020") %>%
   kable_paper("hover", full_width = F)
 
