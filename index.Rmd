@@ -296,16 +296,26 @@ Journaux referencés par Scopus et par annés depuis les publication ERPI
 
 ```{r, layout="l-screen-inset", include=TRUE}
 
+# Impact Factor
+JCR <- read_csv("JCR/JCR.csv", skip = 1) %>% 
+  rename(Journal=`Full Journal Title`,
+         Impact_factor= `Journal Impact Factor`) %>% 
+  select(Journal, Impact_factor)
+JCR$Journal = tolower(JCR$Journal)
+
+
 Revistas <- 
   HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year)) %>% 
     select(Year, Title, Authors, Journal, Scopus)
+
+Revistas <- Revistas %>% left_join(JCR, by= "Journal")
 
 #paged_table(Revistas, options = list(cols.min.print=2))
 
 # library(flextable)
 # flextable(Revistas)
 
-Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Scopus) %>% 
+Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor) %>% 
   kbl( caption = "Articles for ERPI 2016 - 2020") %>%
   kable_paper("hover", full_width = F)
 
@@ -391,15 +401,7 @@ Qs <-
 
 ```{r}
 
-JCR <- read_csv("JCR/JCR.csv")
-Qs <- 
-  HAL %>% 
-  filter(Type.document == "ART") %>% 
-  filter(Scopus == "Oui") %>% 
-  left_join(Scopus, by= "Journal") %>% 
-  select("Scopus Sub-Subject Area") %>% 
-  group_by(`Scopus Sub-Subject Area`) %>% 
-  tally(sort = TRUE, name = "Frequency") 
+  
   
 
 
