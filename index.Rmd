@@ -43,18 +43,42 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = FALSE)
 require(tidyverse)
 require(knitr)
 require(kableExtra)
 require(DT)
+library(rmarkdown)
 
+theme_fabio <- function(base_size = 12, base_family = "Palatino"){
+  theme_minimal(base_size = base_size, base_family = base_family) %+replace%
+    theme(
+      #line = element_line(colour="black"),
+      #text = element_text(colour="black"),
+      #axis.title = element_text(size = 14),
+      #axis.text = element_text(colour="black", size=8),
+      #strip.text = element_text(size=12),
+      #legend.key=element_rect(colour=NA, fill =NA),
+      #panel.grid = element_blank(),   
+      #panel.border = element_rect(fill = NA, colour = "black", size=1),
+      #panel.background = element_rect(fill = "white", colour = "black"), 
+      #strip.background = element_rect(fill = NA),
+      #plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)
+      )
+}
+
+
+  
+
+  
+  
 ```
 
 
 # Critères d'evaluation
 
-```{r, layout="l-body-outset", captio}
+```{r table-evaluation, layout="l-body-outset"}
 
 Criteria <- tribble(
   ~Type,  ~Production,
@@ -92,7 +116,7 @@ Criteria <- tribble(
 
 ```
 
-```{r, layout="l-body-outset"}
+```{r table-evaluation-1, layout="l-body-outset"}
 Criteria %>% 
   kbl( caption = "Indicators for ERPI 2016 - 2020") %>%
   kable_paper("hover", full_width = F) %>% 
@@ -116,29 +140,47 @@ Criteria %>%
 Last update from HAL:  "`r format(Sys.time(), '%d %B, %Y')`"
 
 
-```{r, include=FALSE}
+```{r HAL, include=FALSE}
 # Data HAL ----
-
 HAL <- read_csv("HAL/HAL-May-2021.csv") %>% 
   select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
 
-
-
 ## Selecting the rubrics
-
-## Total data
+  ## Total data
 HAL <- HAL %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Language")
 
-## Filtering 2016 and tolower
-HAL <- HAL %>% filter(Year >= 2016)
+  ## Filtering 2016 and tolower
+HAL <- HAL %>% filter(Year >= 2016, Year<2021)
 HAL$Journal = tolower(HAL$Journal)
 
 #write.csv2(HAL, "HAL/HAL-2016-2020.csv")
 #write_csv2(HAL, "HAL/HAL-2016-2020.csv")
 #write_excel_csv2(HAL, "HAL/HAL-2016-2020-excel.csv")
 
-# Scimago ----
 
+# Data Scopus ----
+
+Scopus <- read_csv2("Scopus/Scopus-2019.csv") 
+Scopus = Scopus %>%  rename(Journal = Title)
+Scopus$Journal = tolower(Scopus$Journal)
+Journal_scopus <- factor(Scopus$Journal) %>% unique()
+
+#HAL <- HAL %>% left_join(Scopus, by= "Journal")
+
+names(HAL)
+HAL <- 
+  HAL %>%
+  mutate(
+    Scopus = case_when(
+      HAL$Journal %in% Journal_scopus ~ "Oui",
+      TRUE                      ~ "Non"
+    )
+  )
+```
+
+
+```{r Scimago, include=FALSE}
+# Scimago ----
 ## Engineering
 Engineering.Scimago <- read.csv2("HAL/Scimago/Engineering.csv") %>%  select(Title, SJR.Best.Quartile, H.index)
 Engineering.Scimago <-  Engineering.Scimago %>% set_names("Journal", "Scimago<br/>Engineering", "H.Factor")
@@ -172,8 +214,8 @@ names(ERPI)
 
 
 
-```{r, include=TRUE, layout="l-screen-inset"}
-ERPI %>% select(Year, Type.document, Title, Authors, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences', H.Factor) %>% 
+```{r , include=FALSE, layout="l-screen-inset"}
+HAL %>% select(Year, Type.document, Title, Authors, Journal) %>%  #, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences', H.Factor) %>% 
   datatable(. , escape = FALSE ,  options = list(
   pageLength = 1,
   lengthMenu = c(1, 5, 10, 15, 20)
@@ -185,52 +227,190 @@ ERPI %>% select(Year, Type.document, Title, Authors, Journal, 'Scimago<br/>Engin
 ## Evolution of ERPI's Scientific production
 
 
-```{r}
-Articles <- HAL %>% filter(Type.document == "ART" | Type.document == "COMM" | Type.document == "THESE")
-```
+```{r Production_total, layout="l-body-outset", fig.width=8, fig.height=4 }
 
+# Filtering by Article, Conference and THesis
+Production <- HAL %>% filter(Type.document == "ART" | Type.document == "COMM" | Type.document == "THESE")
 
-
-```{r, layout="l-body-outset", fig.width=8, fig.height=4}
+# Counting the total production
+total <- Production %>% group_by(Type.document) %>% summarise(total = sum(n()))
 
 # Total of articles
-# Articles %>% group_by(Type.document) %>% tally(name = "Quantity") 
-
-Articles %>% group_by(Year, Type.document) %>% tally(name = "Quantity") %>% 
+Production %>% group_by(Year, Type.document) %>% tally(name = "Quantity") %>% 
   ggplot(aes(x=Year, y=Quantity, color = Type.document )) +
   geom_line() + geom_point() +
   labs(x="Années", y="Nombre des documents", title = "Production scientifique ERPI", subtitle = "Articles, Conferences  et Thèses doctorat") +
-  scale_colour_discrete(name  ="Type de document",
+  scale_colour_discrete(name  ="Total par type\nde publication",
                             breaks=c("ART", "COMM", "THESE"),
-                            labels=c("Articles", "Conferences", "Phd Thèses")) +
+                            labels=c(paste0("Articles = ", total$total[1]),
+                                     paste0("Conferences = ", total$total[2]),
+                                     paste0("Phd Thèses = ", total$total[3])
+                                     )) +
       # scale_shape_discrete(name  ="Type de document",
       #                       breaks=c("ART", "COMM", "THESE"),
       #                       labels=c("Article", "Conferences", "Phd Thèses"))
-  theme_minimal() +
-  theme(axis.text=element_text(size=14, family = "Palatino"),
-        axis.title=element_text(size=16,face="bold", family = "Palatino"),legend.position="right")+
-  theme(plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)) +
-  coord_cartesian(ylim = c(0, 25))
+  coord_cartesian(ylim = c(0, 30)) +
+  theme_fabio()
+
   
 ```
 
+## Journals
+
+```{r Journals, layout="l-body-outset", fig.width=8, fig.height=4 }
+
+# Create test data.
+Articles <- HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year))
+
+Journals <- Articles  %>% group_by(Journal) %>% summarise(Quantity=n()) %>% mutate(Journal=factor(Journal, Journal))
 
 
+Journals %>%
+   arrange(Quantity) %>%
+   filter(Quantity >= 2) %>%
+   mutate(Journal=factor(Journal, Journal)) %>%
+   ggplot( aes(x=Journal, y=Quantity) ) +
+   geom_segment( aes(x=Journal ,xend=Journal, y=0, yend=Quantity), color="grey") +
+   geom_point(size=3, color="#69b3a2") +
+   coord_flip() +
+   theme_fabio() +
+   #theme_minimal(base_size = 15, base_family = "Palatino") +
+   labs(x = "", y = "Quantité  d'article", title = "Journaux scientifiques principaux",
+        subtitle = "Minimum 2 articles dans ces Journaux") +
+   #    theme_ipsum() +
+   theme(
+      panel.grid.minor.y = element_blank(),
+      panel.grid.major.y = element_blank(),
+      legend.position="none"
+   ) +
+   xlab("")
+
+
+```
+
+
+## Analyse SCOPUS
+
+Journaux referencés par Scopus et par annés depuis les publication ERPI
+
+
+```{r, layout="l-screen-inset", include=TRUE}
+
+Revistas <- 
+  HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year)) %>% 
+    select(Year, Title, Authors, Journal, Scopus)
+
+#paged_table(Revistas, options = list(cols.min.print=2))
+
+# library(flextable)
+# flextable(Revistas)
+
+Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Scopus) %>% 
+  kbl( caption = "Articles for ERPI 2016 - 2020") %>%
+  kable_paper("hover", full_width = F)
+
+```
+
+
+```{r Scopus-1}
+Articles <- HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year))
+
+Articles %>% group_by(Year, Scopus) %>% tally(name = "Quantity") %>% 
+  ggplot(aes(x=Year, y=Quantity, color = Scopus )) +
+  geom_line() + geom_point() +
+  labs(x="Années", y="Nombre des documents", title = "Articles listés dans la base SCOPUS", subtitle = "") +
+  theme_fabio()
+```
+
+
+### Sous-domaines selons Scopus
+
+SCOPUS a une serie de Sous domaine lié à chaque journal. 
+Dans ce wordcloud, une presentation des sous-domaines en tulisant les journaux references Scopus publiés par ERPI dans la periode 2016-2020
+
+```{r, layout="l-body-outset", fig.width=8, fig.height=4}
+library(wordcloud2)
+Domaines <- 
+  HAL %>% 
+  filter(Type.document == "ART") %>% 
+  filter(Scopus == "Oui") %>% 
+  left_join(Scopus, by= "Journal") %>% 
+  select("Scopus Sub-Subject Area") %>% 
+  group_by(`Scopus Sub-Subject Area`) %>% 
+  tally(sort = TRUE, name = "Frequency") 
+
+wordcloud2(data = Domaines,  shape = 'circle', size=0.2 ) 
+
+```
+
+### Analyse CiteScore 
+
+Scopus utilise cette mésure au lieu d'Impact factor utilisé par Thomson-Reuters
+
+```{r Citescore}
+
+# Obtaining the CIteScore  
+Citescore <-  Scopus %>% select(Journal, CiteScore) %>% unique()
+
+Articles <- 
+  HAL %>% 
+  filter(Type.document == "ART") %>% 
+  filter(Scopus == "Oui") %>% 
+  left_join(Citescore, by= "Journal")  
+  
+Articles$Year <- as.factor(Articles$Year)
+
+Articles %>% 
+  ggplot( aes(x=Year, y=CiteScore)) +
+    geom_boxplot(fill="slateblue", alpha=0.5) +
+  labs(x="Années", y="CiteScore", title = "Profile CiteScore de l'ERPI", subtitle = "") +
+  theme_fabio()
+```
 
 
 ## Quartiles of the Publications
 
-
 ```{r}
-Publications <- 
-  ERPI %>% filter(Type.document == "ART"  ) %>%  filter(Year >= 2016 & Year <= 2020 )
+
+Qs <- 
+  HAL %>% 
+  filter(Type.document == "ART") %>% 
+  filter(Scopus == "Oui") %>% 
+  left_join(Scopus, by= "Journal") %>% 
+  select("Scopus Sub-Subject Area") %>% 
+  group_by(`Scopus Sub-Subject Area`) %>% 
+  tally(sort = TRUE, name = "Frequency") 
+  
+
 
 ```
 
-### Scimago Engineering
 
-```{r, layout="l-body-outset", fig.width=8, fig.height=4}
-Publications %>% group_by(Year, `Scimago<br/>Engineering`) %>% tally(name = "Quantity") %>% 
+
+## Analyse JCR (Impact Factor)
+
+```{r}
+
+JCR <- read_csv("JCR/JCR.csv")
+Qs <- 
+  HAL %>% 
+  filter(Type.document == "ART") %>% 
+  filter(Scopus == "Oui") %>% 
+  left_join(Scopus, by= "Journal") %>% 
+  select("Scopus Sub-Subject Area") %>% 
+  group_by(`Scopus Sub-Subject Area`) %>% 
+  tally(sort = TRUE, name = "Frequency") 
+  
+
+
+```
+
+
+<!-- ### Scimago Engineering -->
+
+```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=FALSE, eval=FALSE}
+
+Articles %>% group_by(Year, `Scimago<br/>Engineering`) %>% tally(name = "Quantity") %>% 
   ggplot(aes(x=Year, y=Quantity, color = `Scimago<br/>Engineering` )) +
   geom_line() + geom_point() +
   labs(x="Années", y="Nombre des documents \n QuArtiles", title = "Production scientifique ERPI", subtitle = "Articles") +
@@ -241,19 +421,14 @@ Publications %>% group_by(Year, `Scimago<br/>Engineering`) %>% tally(name = "Qua
       # scale_shape_discrete(name  ="Type de document",
       #                       breaks=c("ART", "COMM", "THESE"),
       #                       labels=c("Article", "Conferences", "Phd Thèses"))
-  theme_minimal() +
-  theme(axis.text=element_text(size=14, family = "Palatino"),
-        axis.title=element_text(size=16,face="bold", family = "Palatino"),legend.position="right")+
-  theme(plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)) +
+  theme_fabio() +
   coord_cartesian(ylim = c(0, 25))
   
 ```
 
-`NA` signiife que on l'article n'est pas reporte dans les Q's sur ce section de Scimago.
+<!-- ### Scimago Desicion Sciences -->
 
-### Scimago Desicion Sciences
-
-```{r, layout="l-body-outset", fig.width=8, fig.height=4}
+```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=FALSE, eval=FALSE }
 
 
 Publications %>% group_by(Year, `Scimago<br/>Decision<br/>Sciences`) %>% tally(name = "Quantity") %>% 
@@ -274,10 +449,6 @@ Publications %>% group_by(Year, `Scimago<br/>Decision<br/>Sciences`) %>% tally(n
   coord_cartesian(ylim = c(0, 25))
   
 ```
-
-
-
-
 
 
 
