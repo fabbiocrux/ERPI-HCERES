@@ -505,7 +505,7 @@ ggplot(data = piramide,
 ```
 
 
-# International Collaborations
+# International Collaborations {#collaboration}
 
 ```{r, include=FALSE, echo=FALSE}
 library(rworldmap)
