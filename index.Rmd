@@ -452,7 +452,9 @@ Publications %>% group_by(Year, `Scimago<br/>Decision<br/>Sciences`) %>% tally(n
 
 
 
-## Tranches d'ges
+## Tranches d'Ages
+
+
 
 ```{r, include=FALSE}
 library("readxl")
@@ -469,7 +471,6 @@ Edades <- read_excel("Mauricio/Annexe-5.xlsx",
                                     ))
 # Filtering the data
 Edades <- Edades[1:44,]
-
 Edades$today <- Sys.time()
 
 Edades$ages = interval(start = Edades$Date_naissance, end = Edades$today) /
@@ -478,19 +479,36 @@ Edades$ages = interval(start = Edades$Date_naissance, end = Edades$today) /
 Edades$rango <- ordered( cut(Edades$ages, breaks = c(seq(20,70,10)), 
                            include.lowest = TRUE))
 # Deleting personnes 
-
 Excluidos <- Edades %>%
-  filter(Prénom %in% c('NOÉMIE', 'CEDRIC', 'GREGORY', "ALEXIS", "CINDY", "STÉPHANE", "PEDRO", "JONATHAN", "CHRISTIAN", "DANIEL ANDRES", "MARIE REINE")) 
+  filter(Prénom %in% c('NOÉMIE', 'CEDRIC', 'GREGORY', "ALEXIS", "STÉPHANE", "PEDRO", "CHRISTIAN", "DANIEL ANDRES", "MARIE REINE", "PATRICK")) 
 
-Edades <- Edades %>% anti_join(Excluidos)
+Membres <- Edades %>% anti_join(Excluidos)
 
-library(lemon)
 
-piramide <- Edades %>% group_by(rango, Sexe) %>% tally()
+
 ```
 
+Membres (Prof, MDF, Admin et PostDoc/Chercheur contractuelle) présents à 2020 à l'ERPI:
+**Quantité total des perssones** : `r nrow(Membres)`
+
+
+Voila la liste des perssones à Dec 2020.
+
+```{r}
+paged_table(Membres %>% select(Nom, Prénom))
+```
+
+Un résume par Status
+
+```{r}
+paged_table(Membres %>% group_by(`Corps-grade`) %>% tally() %>% set_names("Status", "Quantité"))
+```
+
+Pyramide des ages
 
 ```{r, layout="l-body-outset", fig.width=6, fig.height=4, include=TRUE}
+library(lemon)
+piramide <- Membres %>% group_by(rango, Sexe) %>% tally()
 ggplot(data = piramide, 
        mapping = aes(x = ifelse(test = Sexe == "H", yes = -n, no = n), 
                      y = rango, fill = Sexe)) +
@@ -499,6 +517,26 @@ ggplot(data = piramide,
   #scale_x_continuous(breaks = c(-6,-4,-2,0, 2, 4, 6)) +
   
   labs(x="Nombre des personnes", y="Intervalle", subtitle = "Tranche d'ages à l'ERPI", title = "") +
+  theme_fabio() +
+  scale_fill_brewer(palette = "Set2") 
+
+```
+
+
+Pyramide des ages sans les chercheur contractuelles / Postdocs
+
+```{r, layout="l-body-outset", fig.width=6, fig.height=4, include=TRUE}
+
+piramide <- Membres %>% filter(Type_emploi != "Ch_aut") %>% group_by(rango, Sexe) %>% tally()
+
+ggplot(data = piramide, 
+       mapping = aes(x = ifelse(test = Sexe == "H", yes = -n, no = n), 
+                     y = rango, fill = Sexe)) +
+  geom_col() +
+  scale_x_symmetric(labels = abs, n.breaks=10) +
+  #scale_x_continuous(breaks = c(-6,-4,-2,0, 2, 4, 6)) +
+  
+  labs(x="Nombre des personnes", y="Intervalle", subtitle = "Tranche d'ages à l'ERPI\n(Sans chercheurs contractuelles)", title = "") +
   theme_fabio() +
   scale_fill_brewer(palette = "Set2") 
 
@@ -521,8 +559,8 @@ Countries$Paises <- Countries$Paises %>% toupper()
 Countries <- Countries %>% group_by(Paises) %>% tally(name = "freq")
 
 Countries$count_group <- cut(Countries$freq, 
-                       breaks = c(-Inf, 1, 4, Inf), 
-                       labels = c("Exploratoire", "En construction", "Recurrent" ))
+                       breaks = c(-Inf, 2, 4, Inf), 
+                       labels = c("Exploratoire\n(<2)", "En construction\n(2-4)", "Recurrent\n(>4)" ))
 
 world_map <- map_data(map = "world")
 world_map$region <- iso.alpha(world_map$region)
