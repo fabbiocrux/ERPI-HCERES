@@ -142,12 +142,10 @@ Last update from HAL:  "`r format(Sys.time(), '%d %B, %Y')`"
 
 ```{r HAL, include=FALSE}
 # Data HAL ----
-HAL <- read_csv("HAL/HAL-May-2021.csv") %>% 
-  select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
+#HAL <- read_csv("HAL/HAL-May-2021.csv") %>% select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
+HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Labs", "Countries") 
+  
 
-## Selecting the rubrics
-  ## Total data
-HAL <- HAL %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Language")
 
   ## Filtering 2016 and tolower
 HAL <- HAL %>% filter(Year >= 2016, Year<2021)
@@ -161,7 +159,8 @@ HAL$Journal = tolower(HAL$Journal)
 # Data Scopus ----
 
 Scopus <- read_csv2("Scopus/Scopus-2019.csv") 
-Scopus = Scopus %>%  rename(Journal = Title)
+names(Scopus)[2]=c("Journal")
+#Scopus = Scopus %>%  rename(Journal = Title)
 Scopus$Journal = tolower(Scopus$Journal)
 Journal_scopus <- factor(Scopus$Journal) %>% unique()
 
@@ -174,8 +173,7 @@ HAL <-
     Scopus = case_when(
       HAL$Journal %in% Journal_scopus ~ "Oui",
       TRUE                      ~ "Non"
-    )
-  )
+    ))
 ```
 
 
@@ -203,7 +201,7 @@ ERPI <- left_join(ERPI, DS.Scimago, by="Journal" )
 ERPI <-  ERPI %>% mutate(H.Factor = coalesce(H.Factor.x, H.Factor.y))
 
 
-ERPI <- ERPI %>% select(Year,Type.document , Title, Authors, DOI, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences' , Publisher, Conference,Language ,  Url, H.Factor)
+ERPI <- ERPI %>% select(Year,Type.document , Title, Authors, DOI, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences' , Publisher, Conference ,  Url, H.Factor)
 
 
 ERPI <- ERPI %>%arrange(desc(Year), Type.document)
@@ -509,52 +507,74 @@ ggplot(data = piramide,
 
 # International Collaborations
 
-```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=TRUE, echo=FALSE}
-
+```{r, include=FALSE, echo=FALSE}
 library(rworldmap)
-
-ddf = read.table(text="
-country Collaborations
-USA 2
-Germany 3
-France 80
-Chile 5
-", header=T)
-
-#spdf <- joinCountryData2Map(ddf, joinCode="NAME", nameJoinColumn="country")
-
-#mapCountryData(spdf, mapTitle="Collaboration ERPI", nameColumnToPlot="Collaborations", catMethod=c(1:100))
-
-
-world_map <- map_data("world")
-ggplot(world_map, aes(x = long, y = lat, group = group)) +
-  geom_polygon(fill="lightgray", colour = "white") +
-  theme_void()
-
-
 library(maps)
 library(RColorBrewer)
 library(forcats)
 
-df <- data.frame(
-  id = c("US", "DE", "UA", "SY"),
-  count = c(1, 2, 4, 6)
-)
 
-df$count_group <- cut(df$count, 
-                      breaks = c(-Inf, 1, 5, Inf), 
-                      labels = c("Iniciant", "En construction", "Recurrent" ))
+Countries <- paste(HAL$Countries,collapse=",")  
+Countries <- strsplit(Countries, ",")  
+Countries <- tibble(Paises=Countries[[1]])
+Countries$Paises <- Countries$Paises %>% toupper() 
+Countries <- Countries %>% group_by(Paises) %>% tally(name = "freq")
+
+Countries$count_group <- cut(Countries$freq, 
+                       breaks = c(-Inf, 1, 4, Inf), 
+                       labels = c("Exploratoire", "En construction", "Recurrent" ))
 
 world_map <- map_data(map = "world")
 world_map$region <- iso.alpha(world_map$region)
+str(world_map)
 
-ggplot(df) +
-  geom_map(aes(map_id = id, fill = fct_rev(count_group)), map = world_map) +
-  geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'black', fill = NA) +
-  expand_limits(x = world_map$long, y = world_map$lat) +
-  scale_fill_manual(name = "Counts", values = rev(brewer.pal(5, name = "Reds"))) +
-  theme_void() +
-  coord_fixed()
 
 ```
 
+
+```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=TRUE, echo=FALSE}
+ggplot(Countries) +
+  geom_map(aes(map_id = Paises, fill = fct_rev(count_group)), map = world_map) +
+  geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'black', fill = NA) +
+  #expand_limits(x = world_map$long, y = world_map$lat) +
+  scale_fill_manual(name = "Collaboration" , values = c("#b2df8a","#1f78b4", "#a6cee3") ) +
+  theme_void() +
+  coord_fixed() 
+
+
+```
+
+On Europe
+
+```{r,  fig.width=7, fig.height=7, include=TRUE, echo=FALSE}
+ggplot(Countries) +
+  geom_map(aes(map_id = Paises, fill = fct_rev(count_group)), map = world_map) +
+  geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'black', fill = NA) +
+  #expand_limits(x = world_map$long, y = world_map$lat) +
+  scale_fill_manual(name = "Collaboration" , values = c("#b2df8a","#1f78b4", "#a6cee3") ) +
+  theme_void() +
+  coord_fixed() +
+  coord_cartesian(xlim = c(-10, 40),ylim = c(15, 65), expand = TRUE)
+  
+
+
+```
+
+ America
+ 
+
+```{r, fig.width=8, fig.height=8, include=TRUE, echo=FALSE}
+ggplot(Countries) +
+  geom_map(aes(map_id = Paises, fill = fct_rev(count_group)), map = world_map) +
+  geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'black', fill = NA) +
+  #expand_limits(x = world_map$long, y = world_map$lat) +
+  scale_fill_manual(name = "Collaboration" , values = c("#b2df8a","#1f78b4", "#a6cee3") ) +
+  theme_void() +
+  coord_fixed() +
+  coord_cartesian(xlim = c(-150, -20),ylim = c(-50, 70), expand = TRUE)
+  #coord_sf(xlim = c(-20, 40), ylim = c(15, 70), expand = TRUE) 
+  
+
+```
+
+ 
