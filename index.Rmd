@@ -212,15 +212,6 @@ names(ERPI)
 
 
 
-```{r , include=FALSE, layout="l-screen-inset"}
-HAL %>% select(Year, Type.document, Title, Authors, Journal) %>%  #, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences', H.Factor) %>% 
-  datatable(. , escape = FALSE ,  options = list(
-  pageLength = 1,
-  lengthMenu = c(1, 5, 10, 15, 20)
-))  %>% 
-  DT::formatStyle(columns = colnames(.), fontSize = '12pt')
-```
-
 
 ## Evolution of ERPI's Scientific production
 
@@ -313,10 +304,37 @@ Revistas <- Revistas %>% left_join(JCR, by= "Journal")
 # library(flextable)
 # flextable(Revistas)
 
-Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor_2019) %>% 
-  kbl( caption = "Articles for ERPI 2016 - 2020") %>%
-  kable_paper("hover", full_width = F)
+# Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor_2019) %>% 
+#   kbl( caption = "Articles for ERPI 2016 - 2020") %>%
+#   kable_paper("hover", full_width = F)
 
+Revistas <- Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor_2019)
+
+library(reactable)
+reactable(Revistas,
+          defaultColDef = colDef(
+            header = function(value) gsub(".", " ", value, fixed = TRUE),
+            #cell = function(value) format(value, nsmall = 1),
+            align = "center",
+            minWidth = 70,
+            headerStyle = list(background = "#f7f7f8")
+          ),
+          columns = list(
+            N = colDef(minWidth = 20),   
+            Year = colDef(minWidth = 30, sortable = TRUE),   
+            Title = colDef(minWidth = 200),   
+            Authors = colDef(minWidth = 100),   
+            Journal = colDef(minWidth = 100),   
+            Scopus = colDef(minWidth = 40),   
+            Impact_factor_2019 = colDef(minWidth = 30)   
+          ),
+          
+          filterable = TRUE, 
+          bordered = TRUE, striped = TRUE, highlight = TRUE,
+          compact = TRUE,
+          showPageSizeOptions = TRUE, pageSizeOptions = c(1,5, 10, 50,100), defaultPageSize = 5,
+          #groupBy = "Year"
+)
 ```
 
 
@@ -495,7 +513,7 @@ Membres (Prof, MDF, Admin et PostDoc/Chercheur contractuelle) présents à 2020 
 Voila la liste des perssones à Dec 2020.
 
 ```{r}
-paged_table(Membres %>% select(Nom, Prénom))
+paged_table(Membres %>% select( Prénom, Nom)) %>% arrange(Prénom)
 ```
 
 Un résume par Status
