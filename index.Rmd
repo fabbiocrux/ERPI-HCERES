@@ -151,6 +151,9 @@ HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors"
 HAL <- HAL %>% filter(Year >= 2016, Year<2021)
 HAL$Journal = tolower(HAL$Journal)
 
+HAL %>% group_by(Type.document) %>% tally()
+
+
 #write.csv2(HAL, "HAL/HAL-2016-2020.csv")
 #write_csv2(HAL, "HAL/HAL-2016-2020.csv")
 #write_excel_csv2(HAL, "HAL/HAL-2016-2020-excel.csv")
