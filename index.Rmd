@@ -50,6 +50,7 @@ library(knitr)
 library(kableExtra)
 library(DT)
 library(rmarkdown)
+library(reactable)
 
 theme_fabio <- function(base_size = 12, base_family = "Palatino"){
   theme_minimal(base_size = base_size, base_family = base_family) %+replace%
@@ -135,7 +136,7 @@ Criteria %>%
 
 ---
 
-# Database from HAL 2016 - 2020
+# Document froms HAL 2016 - 2020
 
 Last update from HAL:  "`r format(Sys.time(), '%d %B, %Y')`"
 
@@ -151,7 +152,7 @@ HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors"
 HAL <- HAL %>% filter(Year >= 2016, Year<2021)
 HAL$Journal = tolower(HAL$Journal)
 
-HAL %>% group_by(Type.document) %>% tally()
+#HAL %>% group_by(Type.document) %>% tally()
 
 
 #write.csv2(HAL, "HAL/HAL-2016-2020.csv")
@@ -215,6 +216,37 @@ names(ERPI)
 
 
 
+```{r Hal_raw, layout="l-screen-inset shaded"}
+
+reactable(HAL %>% select(-Publisher) %>% arrange(desc(Year)),
+          defaultColDef = colDef(
+            header = function(value) gsub(".", " ", value, fixed = TRUE),
+            #cell = function(value) format(value, nsmall = 1),
+            align = "center",
+            minWidth = 25,
+            headerStyle = list(background = "#f7f7f8")
+          ),
+          columns = list(
+            Url = colDef(minWidth = 40),   
+            Title = colDef(minWidth = 100),   
+            Authors = colDef(minWidth = 100),   
+            Type.document = colDef(minWidth = 30),   
+            DOI = colDef(minWidth = 30),   
+            Year = colDef(minWidth = 40),   
+            Journal = colDef(minWidth = 30) ,  
+            #Publisher = colDef(minWidth = 30),
+            Conference = colDef(minWidth = 50),
+            Labs = colDef(minWidth = 50),
+            Countries = colDef(minWidth = 25)
+          ),
+          wrap = TRUE,
+          filterable = TRUE, 
+          bordered = TRUE, striped = TRUE, highlight = TRUE,
+          compact = TRUE,
+          showPageSizeOptions = TRUE, pageSizeOptions = c(1,5, 10, 50,100), defaultPageSize = 5,
+          #groupBy = "Year"
+)
+```
 
 ## Evolution of ERPI's Scientific production
 
@@ -281,7 +313,7 @@ Journals %>%
 ```
 
 
-## Analyse SCOPUS
+## Articles à Comité de Lecture
 
 Journaux referencés par Scopus et par annés depuis les publication ERPI
 
