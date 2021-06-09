@@ -367,12 +367,7 @@ Journals %>%
    xlab("")
 
 
-# Revistas$Journal
-# IF_manuel <- tibble(
-#   Journal=c(),
-#   Impact_factor_2019 = c() 
-#   
-# )
+
 
 ```
 
@@ -388,11 +383,23 @@ JCR <- read_csv("JCR/JCR.csv", skip = 1) %>%
 JCR$Journal = tolower(JCR$Journal)
 
 
+
+# IF manual ----
+IF_manual <- tibble(
+  Journal=c("technological forecasting and social change"),
+  Impact_factor_2019 = c(5.846)
+)
+
+JCR <- JCR %>% rbind(IF_manual)
+
+
+
 Revistas <- 
   HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year)) %>%
     select(Year, Title, Authors, Journal, Scopus)
 
 Revistas <- Revistas %>% left_join(JCR, by= "Journal")
+
 
 # Impact Factor ----
 IF <- Revistas  %>% drop_na(Impact_factor_2019) %>% group_by(Journal) %>% summarise(Quantity=n()) 
