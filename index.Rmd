@@ -388,11 +388,15 @@ JCR$Journal = tolower(JCR$Journal)
 IF_manual <- tibble(
   Journal=c("technological forecasting and social change",
             "geoderma",
-            "resources, conservation and recycling"
+            "resources, conservation and recycling",
+            "international journal of disaster risk reduction",
+            "the canadian journal of chemical engineering"
             ),
   Impact_factor_2019 = c(5.846,
                          4.848,
-                         8.086)
+                         8.086,
+                         2.896,
+                         1.687)
             )
 
 JCR <- JCR %>% rbind(IF_manual)
