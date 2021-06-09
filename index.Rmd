@@ -48,9 +48,15 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-library(DT)
+#library(DT)
 library(rmarkdown)
 library(reactable)
+library(here)
+library(jsonlite)
+library(tidyverse)
+library(plotly)
+library(reshape2)
+
 
 theme_fabio <- function(base_size = 12, base_family = "Palatino"){
   theme_minimal(base_size = base_size, base_family = base_family) %+replace%
@@ -135,6 +141,58 @@ Criteria %>%
 
 
 ---
+
+# Workshop ERPI 2019
+
+## Competences ERPI par rapport aux reference ministère
+
+```{r}
+
+Competences <- read_csv(here("Workshop", "Explanation.competences.csv"))
+reactable(Competences,
+          defaultColDef = colDef(
+            header = function(value) gsub(".", " ", value, fixed = TRUE),
+            #cell = function(value) format(value, nsmall = 1),
+            align = "center",
+            minWidth = 25,
+            headerStyle = list(background = "#f7f7f8")
+          ),
+          columns = list(
+            Competence = colDef(minWidth = 50),   
+            Description = colDef(minWidth = 150)
+          ),
+          wrap = TRUE,
+          filterable = TRUE, 
+          bordered = TRUE, striped = TRUE, highlight = TRUE,
+          compact = TRUE,
+          showPageSizeOptions = TRUE, pageSizeOptions = c(1,5, 10, 50,100), defaultPageSize = 3,
+          #groupBy = "Year"
+)
+```
+
+### Levels
+
++-------------+------------------------------------------+---------------------------------------------------------------------+------------------------------------------------------------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| Level       | 0                                        | 1                                                                   | 2                                                                      | 3                                                                                      | 4                                                          | 5                                                                                                    |
++=============+==========================================+=====================================================================+========================================================================+========================================================================================+============================================================+======================================================================================================+
+| Type        |                                          | Novice                                                              | Débutant avancé                                                        | Compétent                                                                              | Performant                                                 | Expert                                                                                               |
++-------------+------------------------------------------+---------------------------------------------------------------------+------------------------------------------------------------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| Explanation | Ne comprend pas quelle est la compétence | Comprendre ce qu'est la compétence et pourquoi elle est importante. | Cette compétence est démontrée sous supervision ou avec encouragement. | Cette compétence est démontrée indépendamment de la supervision ou de l'encouragement. | Encourager ou superviser les autres dans cette compétence. | Développer de nouvelles façons d'appliquer cette compétence. C'est mesuré sur la scène International |
++-------------+------------------------------------------+---------------------------------------------------------------------+------------------------------------------------------------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+
+
+
+```{r, layout="l-page", fig.width=10, fig.height=10 }
+
+source(here("Workshop/Workshop_2019.R"))
+Workshop()
+
+```
+
+
+
+
+
 
 # Document froms HAL 2016 - 2020
 
