@@ -343,7 +343,6 @@ Production %>% group_by(Year, Type.document) %>% tally(name = "Quantity") %>%
 
 # Create test data.
 Articles <- HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year))
-
 Journals <- Articles  %>% group_by(Journal) %>% summarise(Quantity=n()) %>% mutate(Journal=factor(Journal, Journal))
 
 
@@ -378,12 +377,8 @@ Journals %>%
 ```
 
 
-## Articles à Comité de Lecture
 
-Journaux referencés par Scopus et par annés depuis les publication ERPI
-
-
-```{r, layout="l-screen-inset", include=TRUE}
+```{r, layout="l-body-outset", fig.width=8, fig.height=4 }
 
 # Impact Factor
 JCR <- read_csv("JCR/JCR.csv", skip = 1) %>% 
@@ -398,6 +393,43 @@ Revistas <-
     select(Year, Title, Authors, Journal, Scopus)
 
 Revistas <- Revistas %>% left_join(JCR, by= "Journal")
+
+# Impact Factor ----
+IF <- Revistas  %>% drop_na(Impact_factor_2019) %>% group_by(Journal) %>% summarise(Quantity=n()) 
+IF <- IF %>% 
+        left_join(Revistas %>% select(Journal,Impact_factor_2019) %>% unique(), by="Journal") %>% 
+          arrange(Impact_factor_2019) 
+IF <- IF %>% mutate(Journal=factor(Journal, Journal))
+
+IF %>%
+   #filter(Quantity >= 2) %>%
+   mutate(Journal=factor(Journal, Journal)) %>%
+   ggplot( aes(x=Journal, y=Impact_factor_2019) ) +
+   geom_segment( aes(x=Journal ,xend=Journal, y=0, yend=Impact_factor_2019), color="grey") +
+   geom_point(size=3, color="#69b3a2") +
+  geom_text( label=paste0("(", IF$Quantity, ")"), nudge_x = 0, nudge_y = 0.25, check_overlap = T, size=3, color="#69b3a2" )+
+   coord_flip() +
+   theme_fabio() +
+   #theme_minimal(base_size = 15, base_family = "Palatino") +
+   labs(x = "", y = "Impact Factor \n( Quantité d'articles publies)", title = "Journaux scientifiques principaux",
+        subtitle = "") +
+   #    theme_ipsum() +
+   theme(
+      panel.grid.minor.y = element_blank(),
+      panel.grid.major.y = element_blank(),
+      legend.position="none"
+   ) +
+   xlab("")
+
+```
+
+## Articles à Comité de Lecture
+
+Journaux referencés par Scopus et par annés depuis les publication ERPI
+
+
+```{r, layout="l-screen-inset", include=TRUE}
+
 
 #paged_table(Revistas, options = list(cols.min.print=2))
 
