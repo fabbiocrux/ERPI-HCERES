@@ -425,13 +425,19 @@ Revistas <-
 
 Revistas <- Revistas %>% left_join(JCR, by= "Journal")
 
+library(stringr)
+
 
 # Impact Factor ----
 IF <- Revistas  %>% drop_na(Impact_factor_2019) %>% group_by(Journal) %>% summarise(Quantity=n()) 
+
 IF <- IF %>% 
-        left_join(Revistas %>% select(Journal,Impact_factor_2019) %>% unique(), by="Journal") %>% 
-          arrange(Impact_factor_2019) 
+  left_join(Revistas %>% select(Journal,Impact_factor_2019) %>%
+              unique(), by="Journal") %>% 
+  arrange(Impact_factor_2019) 
 IF <- IF %>% mutate(Journal=factor(Journal, Journal))
+
+IF$Journal <- str_to_title(IF$Journal) 
 
 IF %>%
    #filter(Quantity >= 2) %>%
@@ -439,7 +445,7 @@ IF %>%
    ggplot( aes(x=Journal, y=Impact_factor_2019) ) +
    geom_segment( aes(x=Journal ,xend=Journal, y=0, yend=Impact_factor_2019), color="grey") +
    geom_point(size=3, color="#69b3a2") +
-  geom_text( label=paste0("(", IF$Quantity, ")"), nudge_x = 0, nudge_y = 0.25, check_overlap = T, size=3, color="#69b3a2" )+
+  geom_text( label=paste0("(", IF$Quantity, ")"), nudge_x = 0, nudge_y = 0.45, check_overlap = T, size=3, color="#69b3a2" )+
    coord_flip() +
    theme_fabio() +
    #theme_minimal(base_size = 15, base_family = "Palatino") +
