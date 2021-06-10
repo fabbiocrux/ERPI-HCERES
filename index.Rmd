@@ -373,7 +373,7 @@ Journals %>%
 
 
 
-```{r, layout="l-body-outset", fig.width=8, fig.height=4 }
+```{r, layout="l-body-outset", fig.width=8, fig.height=6 }
 
 # Impact Factor
 JCR <- read_csv("JCR/JCR.csv", skip = 1) %>% 
@@ -390,13 +390,29 @@ IF_manual <- tibble(
             "geoderma",
             "resources, conservation and recycling",
             "international journal of disaster risk reduction",
-            "the canadian journal of chemical engineering"
+            "the canadian journal of chemical engineering",
+            "creativity and innovation management",
+            "ai edam",
+            "international review of administrative sciences",
+            "industrial marketing management",
+            "renewable and sustainable energy reviews",
+            "chemical engineering research and design",
+            "ecological indicators",
+            "thinking skills and creativity"
             ),
   Impact_factor_2019 = c(5.846,
                          4.848,
                          8.086,
                          2.896,
-                         1.687)
+                         1.687,
+                         2.113,
+                         1.119,
+                         2.219,
+                         4.695,
+                         12.110,
+                         3.350,
+                         4.229,
+                         2.068)
             )
 
 JCR <- JCR %>% rbind(IF_manual)
