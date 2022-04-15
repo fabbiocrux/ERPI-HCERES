@@ -1,0 +1,55 @@
+# Data HAL ----
+#HAL <- read_csv("HAL/HAL-May-2021.csv") %>% select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
+#HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Labs", "Countries") 
+HAL <- read_csv("HAL/2022-04-13-HAL-full.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference") 
+
+## Filtering 2016 and tolower
+HAL <- HAL %>% filter(Year >= 2016, Year<2023)
+HAL$Journal = tolower(HAL$Journal)
+
+#HAL %>% group_by(Type.document) %>% tally()
+
+# Exporting the data
+#write.csv2(HAL, "HAL/HAL-2016-2020.csv")
+#write_csv2(HAL, "HAL/HAL-2016-2020.csv")
+#write_excel_csv2(HAL, "HAL/HAL-2016-2020-excel.csv")
+
+
+# Data Scopus ----
+Scopus <- read_csv2("Scopus/Scopus-2019.csv") 
+names(Scopus)[2]=c("Journal")
+#Scopus = Scopus %>%  rename(Journal = Title)
+Scopus$Journal = tolower(Scopus$Journal)
+Journal_scopus <- factor(Scopus$Journal) %>% unique()
+
+#HAL <- HAL %>% left_join(Scopus, by= "Journal")
+
+names(HAL)
+HAL <- 
+   HAL %>%
+   mutate(
+      Scopus = case_when(
+         HAL$Journal %in% Journal_scopus ~ "Oui",
+         TRUE                      ~ "Non"
+      ))
+
+
+
+# Scimago ----
+## Engineering
+Engineering.Scimago <- read.csv2("HAL/Scimago/Engineering-2020.csv") %>%  select(Title, SJR.Best.Quartile, H.index, Categories)
+Engineering.Scimago <-  Engineering.Scimago %>% set_names("Journal", "Quartile-Scimago-Engineering", "H.Factor", "Categories")
+Engineering.Scimago$Journal = tolower(Engineering.Scimago$Journal)
+
+
+## Decision Science
+#DS.Scimago <- read.csv2("HAL/Scimago/Decision-sciences.csv") %>%  select(Title, SJR.Best.Quartile, H.index)
+#DS.Scimago <-  DS.Scimago %>% set_names("Journal", "Scimago<br/>Decision<br/>Sciences", "H.Factor")
+#DS.Scimago$Journal = tolower(DS.Scimago$Journal)
+
+
+# Exporting
+ERPI <- left_join(HAL, Engineering.Scimago, by="Journal" )
+#ERPI <- left_join(ERPI, DS.Scimago, by="Journal" )
+
+rm(HAL)

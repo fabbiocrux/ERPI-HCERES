@@ -4,37 +4,37 @@ description: |
   Production de connaissances et activités concourant au rayonnement et à l’attractivité scientifique.
 author:
     
-  - first_name: "Mauricio"
-    last_name: "Camargo"
-    url: https://erpi.univ-lorraine.fr/people/Mauricio-Camargo/
+  - first_name: "Laboratoire"
+    last_name: "ERPI"
+    url: https://erpi.univ-lorraine.fr/
     affiliation: ERPI
     affiliation_url: https://erpi.univ-lorraine.fr/
-    orcid_id: 0000-0003-3867-2438 
-  - first_name: "Fréderique"
-    last_name: "Mayer"
-    url: https://erpi.univ-lorraine.fr/people/Frederique-Mayer/
-    affiliation: ERPI
-    affiliation_url: https://erpi.univ-lorraine.fr/
-    orcid_id: 
-  - first_name: "Eric"
-    last_name: "Bonjour"
-    url: https://erpi.univ-lorraine.fr/people/Eric-Bonjour/
-    affiliation: ERPI
-    affiliation_url: https://erpi.univ-lorraine.fr/
-    orcid_id: 0000-0001-7851-1095 
-  - first_name: "Manon"
-    last_name: "Enjolras"
-    url: https://erpi.univ-lorraine.fr/people/Manon-Enjolras/
-    affiliation: ERPI
-    affiliation_url: https://erpi.univ-lorraine.fr/
-    orcid_id: 0000-0003-4570-1989
-        
-  - first_name: "Fabio"
-    last_name: "Cruz"
-    url: https://erpi.univ-lorraine.fr/people/Fabio-Cruz/
-    affiliation: ERPI
-    affiliation_url: https://erpi.univ-lorraine.fr/
-    orcid_id: 0000-0001-8529-5327
+    #orcid_id: 0000-0003-3867-2438 
+  # - first_name: "Fréderique"
+  #   last_name: "Mayer"
+  #   url: https://erpi.univ-lorraine.fr/people/Frederique-Mayer/
+  #   affiliation: ERPI
+  #   affiliation_url: https://erpi.univ-lorraine.fr/
+  #   orcid_id: 
+  # - first_name: "Eric"
+  #   last_name: "Bonjour"
+  #   url: https://erpi.univ-lorraine.fr/people/Eric-Bonjour/
+  #   affiliation: ERPI
+  #   affiliation_url: https://erpi.univ-lorraine.fr/
+  #   orcid_id: 0000-0001-7851-1095 
+  # - first_name: "Manon"
+  #   last_name: "Enjolras"
+  #   url: https://erpi.univ-lorraine.fr/people/Manon-Enjolras/
+  #   affiliation: ERPI
+  #   affiliation_url: https://erpi.univ-lorraine.fr/
+  #   orcid_id: 0000-0003-4570-1989
+  #       
+  # - first_name: "Fabio"
+  #   last_name: "Cruz"
+  #   url: https://erpi.univ-lorraine.fr/people/Fabio-Cruz/
+  #   affiliation: ERPI
+  #   affiliation_url: https://erpi.univ-lorraine.fr/
+  #   orcid_id: 0000-0001-8529-5327
 date: "`r Sys.Date()`"
 #output: distill::distill_article
 site: distill::distill_website
@@ -43,7 +43,6 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(knitr)
@@ -75,68 +74,14 @@ theme_fabio <- function(base_size = 12, base_family = "Palatino"){
       )
 }
 
-
-  
-
-  
-  
 ```
 
 
 # Critères d'evaluation
 
 ```{r table-evaluation, layout="l-body-outset"}
-
-Criteria <- tribble(
-  ~Type,  ~Production,
-  "Articles scientifiques", "77",
-  "Articles de sythèse / revues bibliographiques", "",
-  "Autres articles (articles publiés dans des revues professionnelles ou techniques, etc)", " ",
-  
-  "Monographies, éditions critiques, traductions", " ",
-  "Direction et coordination d'ouvrages scientifiques / édition scientifique", " ",
-  "Direction et coordination d'ouvrages scientifiques / édition scientifique en anglais ou dans une autre langue étrangère", " ",
-  "Chapitres d'ouvrage", " ",
-  "Chapitres d'ouvrages en anglais ou dans une autre langue étrangère", " ",
-  "Thèse éditées", "16",
-  "Editions d'actes de colloques / congrès", "",
-  "Articles publiés dans des actes de colloques / congrès", "81",
-  "Autres produits présentés dans des colloques / congrès et des séminaires de recherche", "",
-  
-  "Logiciels", "",
-  "Base de données", "",
-  "Outils d'aide à la désicion", "",
-  "Cohortes", "",
-  
-  
-  "Prototypes et démostrateurs", "",
-  "Plateformes et observatoires", "",
-  
-  "Créations artistiques théorisées, mises en scènes, films", "",
-  
-  "Participation à des comités éditoriaux (journaux scientifiques, revues, collections, etc)", "",
-  "Direction de collection et de séries", "",
-  
-  "Evaluation d'articles et d'ouvrages scientifiques (relecture d'articles / reviewing)", ""
-  
-)
-
-```
-
-```{r table-evaluation-1, layout="l-body-outset"}
-Criteria %>% 
-  kbl( caption = "Indicators for ERPI 2016 - 2020") %>%
-  kable_paper("hover", full_width = F) %>% 
-  pack_rows("Journaux / revues", 1, 3) %>%
-  pack_rows("Ouvrages", 4, 9) %>%
-  pack_rows("Production dans des colloques / congrès, séminaires de recherche", 10, 12) %>%
-  pack_rows("Produits et outils informatiques", 13, 16) %>%
-  pack_rows("Développements instrumentaux et méthodologiques", 17, 18) %>%
-  pack_rows("Autres produits propres à une discipline", 19, 19) %>%
-  pack_rows("Activités éditoriales", 20, 21) %>%
-  pack_rows("Activités d'évaluation", 22, 22)
-  
-  
+source("R/Overview-ERPI.R")
+Overview
 ```
 
 
@@ -147,136 +92,58 @@ Criteria %>%
 ## Competences ERPI par rapport aux reference ministère
 
 ```{r, cache=TRUE}
+source("R/Workshop-ERPI.R")
+```
 
-Competences <- read_csv(here("Workshop", "Explanation.competences.csv"))
-reactable(Competences,
-          defaultColDef = colDef(
-            header = function(value) gsub(".", " ", value, fixed = TRUE),
-            #cell = function(value) format(value, nsmall = 1),
-            align = "center",
-            minWidth = 25,
-            headerStyle = list(background = "#f7f7f8")
-          ),
-          columns = list(
-            Competence = colDef(minWidth = 50),   
-            Description = colDef(minWidth = 150)
-          ),
-          wrap = TRUE,
-          filterable = TRUE, 
-          bordered = TRUE, striped = TRUE, highlight = TRUE,
-          compact = TRUE,
-          showPageSizeOptions = TRUE, pageSizeOptions = c(1,5, 10, 50,100), defaultPageSize = 3,
-          #groupBy = "Year"
+Dans le tableau suivant montre les niveau evalué:
+
+```{r}
+Criteria <- tibble(
+ Niveau = c(1:6) ,
+Type = c( " ", "Novice", "Débutant avancé", "Compétent", "Performant",	"Expert"),
+Description = c(
+   "Ne comprend pas quelle est la compétence",
+   "Comprendre ce qu’est la compétence et pourquoi elle est importante.",
+   "Cette compétence est démontrée sous supervision ou avec encouragement.",
+   "Cette compétence est démontrée indépendamment de la supervision ou de l’encouragement.",
+   "Encourager ou superviser les autres dans cette compétence.",
+   "Développer de nouvelles façons d’appliquer cette compétence. C’est mesuré sur la scène International")
 )
 ```
 
-### Levels
-
-+-------------+------------------------------------------+---------------------------------------------------------------------+------------------------------------------------------------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
-| Level       | 0                                        | 1                                                                   | 2                                                                      | 3                                                                                      | 4                                                          | 5                                                                                                    |
-+=============+==========================================+=====================================================================+========================================================================+========================================================================================+============================================================+======================================================================================================+
-| Type        |                                          | Novice                                                              | Débutant avancé                                                        | Compétent                                                                              | Performant                                                 | Expert                                                                                               |
-+-------------+------------------------------------------+---------------------------------------------------------------------+------------------------------------------------------------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
-| Explanation | Ne comprend pas quelle est la compétence | Comprendre ce qu'est la compétence et pourquoi elle est importante. | Cette compétence est démontrée sous supervision ou avec encouragement. | Cette compétence est démontrée indépendamment de la supervision ou de l'encouragement. | Encourager ou superviser les autres dans cette compétence. | Développer de nouvelles façons d'appliquer cette compétence. C'est mesuré sur la scène International |
-+-------------+------------------------------------------+---------------------------------------------------------------------+------------------------------------------------------------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
-
-
 
 ```{r, layout="l-page", fig.width=10, fig.height=10, cache=TRUE}
-
 source(here("Workshop/Workshop_2019.R"))
 Workshop()
-
 ```
-
-
 
 
 
 
 # Document froms HAL 2016 - 2020
 
-Last update from HAL:  "`r format(Sys.time(), '%d %B, %Y')`"
+Liste de production scientific:  Last update from HAL  "`r format(Sys.time(), '%d %B, %Y')`"
 
 
 ```{r HAL, include=FALSE}
-# Data HAL ----
-#HAL <- read_csv("HAL/HAL-May-2021.csv") %>% select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
-HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Labs", "Countries") 
-  
-
-
-  ## Filtering 2016 and tolower
-HAL <- HAL %>% filter(Year >= 2016, Year<2021)
-HAL$Journal = tolower(HAL$Journal)
-
-#HAL %>% group_by(Type.document) %>% tally()
-
-
-#write.csv2(HAL, "HAL/HAL-2016-2020.csv")
-#write_csv2(HAL, "HAL/HAL-2016-2020.csv")
-#write_excel_csv2(HAL, "HAL/HAL-2016-2020-excel.csv")
-
-
-# Data Scopus ----
-
-Scopus <- read_csv2("Scopus/Scopus-2019.csv") 
-names(Scopus)[2]=c("Journal")
-#Scopus = Scopus %>%  rename(Journal = Title)
-Scopus$Journal = tolower(Scopus$Journal)
-Journal_scopus <- factor(Scopus$Journal) %>% unique()
-
-#HAL <- HAL %>% left_join(Scopus, by= "Journal")
-
-names(HAL)
-HAL <- 
-  HAL %>%
-  mutate(
-    Scopus = case_when(
-      HAL$Journal %in% Journal_scopus ~ "Oui",
-      TRUE                      ~ "Non"
-    ))
-```
-
-
-```{r Scimago, include=FALSE}
-# Scimago ----
-## Engineering
-Engineering.Scimago <- read.csv2("HAL/Scimago/Engineering.csv") %>%  select(Title, SJR.Best.Quartile, H.index)
-Engineering.Scimago <-  Engineering.Scimago %>% set_names("Journal", "Scimago<br/>Engineering", "H.Factor")
-Engineering.Scimago$Journal = tolower(Engineering.Scimago$Journal)
-
-
-## Decision Science
-DS.Scimago <- read.csv2("HAL/Scimago/Decision-sciences.csv") %>%  select(Title, SJR.Best.Quartile, H.index)
-DS.Scimago <-  DS.Scimago %>% set_names("Journal", "Scimago<br/>Decision<br/>Sciences", "H.Factor")
-DS.Scimago$Journal = tolower(DS.Scimago$Journal)
-
-
-
 # ERPI PUblications
-ERPI <- left_join(HAL, Engineering.Scimago, by="Journal" )
-ERPI <- left_join(ERPI, DS.Scimago, by="Journal" )
+source(here("R/Hal-data.R"))
 
-
-## H factor
-ERPI <-  ERPI %>% mutate(H.Factor = coalesce(H.Factor.x, H.Factor.y))
-
-
-ERPI <- ERPI %>% select(Year,Type.document , Title, Authors, DOI, Journal, 'Scimago<br/>Engineering', 'Scimago<br/>Decision<br/>Sciences' , Publisher, Conference ,  Url, H.Factor)
-
-
+#names(ERPI)
+ERPI <- 
+   ERPI %>% 
+   select(Year, Type.document , Title, Authors, DOI, Journal, "Quartile-Scimago-Engineering", Scopus, Publisher, Conference ,  Url, H.Factor)
 ERPI <- ERPI %>%arrange(desc(Year), Type.document)
-names(ERPI)
+#write_excel_csv2(ERPI, "HAL/ERPI-2016-2022.csv")
 
-#write_excel_csv2(ERPI, "HAL/ERPI-2016-2020.csv")
 ```
+
 
 
 
 ```{r Hal_raw, layout="l-screen-inset shaded"}
 
-reactable(HAL %>% select(-Publisher) %>% arrange(desc(Year)),
+reactable(ERPI,
           defaultColDef = colDef(
             header = function(value) gsub(".", " ", value, fixed = TRUE),
             #cell = function(value) format(value, nsmall = 1),
@@ -285,231 +152,58 @@ reactable(HAL %>% select(-Publisher) %>% arrange(desc(Year)),
             headerStyle = list(background = "#f7f7f8")
           ),
           columns = list(
-            Url = colDef(minWidth = 40),   
+            Year = colDef(minWidth = 40),   
+            Type.document = colDef(minWidth = 30),   
             Title = colDef(minWidth = 100),   
             Authors = colDef(minWidth = 100),   
-            Type.document = colDef(minWidth = 30),   
             DOI = colDef(minWidth = 30),   
-            Year = colDef(minWidth = 40),   
-            Journal = colDef(minWidth = 30) ,  
-            #Publisher = colDef(minWidth = 30),
+            Journal = colDef(minWidth = 30) ,
+            `Quartile-Scimago-Engineering` = colDef(minWidth = 30),
+            Scopus = colDef(minWidth = 40),   
             Conference = colDef(minWidth = 50),
-            Labs = colDef(minWidth = 50),
-            Countries = colDef(minWidth = 25)
+            H.Factor = colDef(minWidth = 30),
+            Url = colDef(minWidth = 40)  
           ),
           wrap = TRUE,
           filterable = TRUE, 
           bordered = TRUE, striped = TRUE, highlight = TRUE,
           compact = TRUE,
-          showPageSizeOptions = TRUE, pageSizeOptions = c(1,5, 10, 50,100), defaultPageSize = 5,
+          showPageSizeOptions = TRUE, pageSizeOptions = c(1,2,5, 10, 50,100), defaultPageSize = 2
           #groupBy = "Year"
 )
 ```
 
+
 ## Evolution of ERPI's Scientific production
 
+Mise à jour: `r format(Sys.time(), '%d %B, %Y')`
 
 ```{r Production_total, layout="l-body-outset", fig.width=8, fig.height=4 }
-
-# Filtering by Article, Conference and THesis
-Production <- HAL %>% filter(Type.document == "ART" | Type.document == "COMM" | Type.document == "THESE")
-
-# Counting the total production
-total <- Production %>% group_by(Type.document) %>% summarise(total = sum(n()))
-
-# Total of articles
-Production %>% group_by(Year, Type.document) %>% tally(name = "Quantity") %>% 
-  ggplot(aes(x=Year, y=Quantity, color = Type.document )) +
-  geom_line() + geom_point() +
-  labs(x="Années", y="Nombre des documents", title = "Production scientifique ERPI", subtitle = "Articles, Conferences  et Thèses doctorat") +
-  scale_colour_discrete(name  ="Total par type\nde publication",
-                            breaks=c("ART", "COMM", "THESE"),
-                            labels=c(paste0("Articles = ", total$total[1]),
-                                     paste0("Conferences = ", total$total[2]),
-                                     paste0("Phd Thèses = ", total$total[3])
-                                     )) +
-      # scale_shape_discrete(name  ="Type de document",
-      #                       breaks=c("ART", "COMM", "THESE"),
-      #                       labels=c("Article", "Conferences", "Phd Thèses"))
-  coord_cartesian(ylim = c(0, 30)) +
-  theme_fabio()
-
-  
+source(here("R/Scientific-production.R"))
+Production
 ```
 
 ## Journals
 
+Principaux journaux de publication ERPI:
+
 ```{r Journals, layout="l-body-outset", fig.width=8, fig.height=4 }
-
-# Create test data.
-Articles <- HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year))
-Journals <- Articles  %>% group_by(Journal) %>% summarise(Quantity=n()) %>% mutate(Journal=factor(Journal, Journal))
-
-
-Journals %>%
-   arrange(Quantity) %>%
-   filter(Quantity >= 2) %>%
-   mutate(Journal=factor(Journal, Journal)) %>%
-   ggplot( aes(x=Journal, y=Quantity) ) +
-   geom_segment( aes(x=Journal ,xend=Journal, y=0, yend=Quantity), color="grey") +
-   geom_point(size=3, color="#69b3a2") +
-   coord_flip() +
-   theme_fabio() +
-   #theme_minimal(base_size = 15, base_family = "Palatino") +
-   labs(x = "", y = "Quantité  d'article", title = "Journaux scientifiques principaux",
-        subtitle = "Minimum 2 articles dans ces Journaux") +
-   #    theme_ipsum() +
-   theme(
-      panel.grid.minor.y = element_blank(),
-      panel.grid.major.y = element_blank(),
-      legend.position="none"
-   ) +
-   xlab("")
-
-
-
-
+source(here("R/journals.R"))
+Journals
 ```
 
-
+Impact Factor des journaux de publication ERPI:
 
 ```{r, layout="l-body-outset", fig.width=8, fig.height=6 }
-
-# Impact Factor
-JCR <- read_csv("JCR/JCR.csv", skip = 1) %>% 
-  rename(Journal=`Full Journal Title`,
-         Impact_factor_2019= `Journal Impact Factor`) %>% 
-  select(Journal, Impact_factor_2019)
-JCR$Journal = tolower(JCR$Journal)
-
-
-
-# IF manual ----
-IF_manual <- tibble(
-  Journal=c("technological forecasting and social change",
-            "geoderma",
-            "resources, conservation and recycling",
-            "international journal of disaster risk reduction",
-            "the canadian journal of chemical engineering",
-            "creativity and innovation management",
-            "ai edam",
-            "international review of administrative sciences",
-            "industrial marketing management",
-            "renewable and sustainable energy reviews",
-            "chemical engineering research and design",
-            "ecological indicators",
-            "thinking skills and creativity"
-            ),
-  Impact_factor_2019 = c(5.846,
-                         4.848,
-                         8.086,
-                         2.896,
-                         1.687,
-                         2.113,
-                         1.119,
-                         2.219,
-                         4.695,
-                         12.110,
-                         3.350,
-                         4.229,
-                         2.068)
-            )
-
-JCR <- JCR %>% rbind(IF_manual)
-
-
-
-Revistas <- 
-  HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year)) %>%
-    select(Year, Title, Authors, Journal, Scopus)
-
-Revistas <- Revistas %>% left_join(JCR, by= "Journal")
-
-library(stringr)
-
-
-# Impact Factor ----
-IF <- Revistas  %>% drop_na(Impact_factor_2019) %>% group_by(Journal) %>% summarise(Quantity=n()) 
-
-IF <- IF %>% 
-  left_join(Revistas %>% select(Journal,Impact_factor_2019) %>%
-              unique(), by="Journal") %>% 
-  arrange(Impact_factor_2019) 
-IF <- IF %>% mutate(Journal=factor(Journal, Journal))
-
-IF$Journal <- str_to_title(IF$Journal) 
-
-IF %>%
-   #filter(Quantity >= 2) %>%
-   mutate(Journal=factor(Journal, Journal)) %>%
-   ggplot( aes(x=Journal, y=Impact_factor_2019) ) +
-   geom_segment( aes(x=Journal ,xend=Journal, y=0, yend=Impact_factor_2019), color="grey") +
-   geom_point(size=3, color="#69b3a2") +
-  geom_text( label=paste0("(", IF$Quantity, ")"), nudge_x = 0, nudge_y = 0.45, check_overlap = T, size=3, color="#69b3a2" )+
-   coord_flip() +
-   theme_fabio() +
-   #theme_minimal(base_size = 15, base_family = "Palatino") +
-   labs(x = "", y = "Impact Factor \n( Quantité d'articles publies)", title = "Journaux scientifiques principaux",
-        subtitle = "") +
-   #    theme_ipsum() +
-   theme(
-      panel.grid.minor.y = element_blank(),
-      panel.grid.major.y = element_blank(),
-      legend.position="none"
-   ) +
-   xlab("")
-
+source(here("R/IF.R"))
+Impact.Factor
 ```
 
-## Articles à Comité de Lecture
-
-Journaux referencés par Scopus et par annés depuis les publication ERPI
-
-
-```{r, layout="l-screen-inset", include=TRUE}
-
-
-#paged_table(Revistas, options = list(cols.min.print=2))
-
-# library(flextable)
-# flextable(Revistas)
-
-# Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor_2019) %>% 
-#   kbl( caption = "Articles for ERPI 2016 - 2020") %>%
-#   kable_paper("hover", full_width = F)
-
-Revistas <- Revistas %>% mutate(N=rownames(Revistas)) %>% select(N,Year:Impact_factor_2019)
-
-library(reactable)
-reactable(Revistas,
-          defaultColDef = colDef(
-            header = function(value) gsub(".", " ", value, fixed = TRUE),
-            #cell = function(value) format(value, nsmall = 1),
-            align = "center",
-            minWidth = 70,
-            headerStyle = list(background = "#f7f7f8")
-          ),
-          columns = list(
-            N = colDef(minWidth = 20),   
-            Year = colDef(minWidth = 30, sortable = TRUE),   
-            Title = colDef(minWidth = 200),   
-            Authors = colDef(minWidth = 100),   
-            Journal = colDef(minWidth = 100),   
-            Scopus = colDef(minWidth = 40),   
-            Impact_factor_2019 = colDef(minWidth = 30)   
-          ),
-          
-          filterable = TRUE, 
-          bordered = TRUE, striped = TRUE, highlight = TRUE,
-          compact = TRUE,
-          showPageSizeOptions = TRUE, pageSizeOptions = c(1,5, 10, 50,100), defaultPageSize = 5,
-          #groupBy = "Year"
-)
-```
-
+Profile des journaux qui sont en SCOPUS:
 
 ```{r Scopus-1}
-Articles <- HAL %>% filter(Type.document == "ART") %>% arrange(desc(Year))
+Articles <- 
+   ERPI %>% filter(Type.document == "ART") %>% arrange(desc(Year))
 
 Articles %>% group_by(Year, Scopus) %>% tally(name = "Quantity") %>% 
   ggplot(aes(x=Year, y=Quantity, color = Scopus )) +
@@ -518,162 +212,48 @@ Articles %>% group_by(Year, Scopus) %>% tally(name = "Quantity") %>%
   theme_fabio()
 ```
 
-
-### Sous-domaines selons Scopus
-
 SCOPUS a une serie de Sous domaine lié à chaque journal. 
 Dans ce wordcloud, une presentation des sous-domaines en tulisant les journaux references Scopus publiés par ERPI dans la periode 2016-2020
 
 ```{r, layout="l-body-outset", fig.width=8, fig.height=4}
-library(wordcloud2)
-Domaines <- 
-  HAL %>% 
-  filter(Type.document == "ART") %>% 
-  filter(Scopus == "Oui") %>% 
-  left_join(Scopus, by= "Journal") %>% 
-  select("Scopus Sub-Subject Area") %>% 
-  group_by(`Scopus Sub-Subject Area`) %>% 
-  tally(sort = TRUE, name = "Frequency") 
-
-wordcloud2(data = Domaines,  shape = 'circle', size=0.2 ) 
-
+source(here("R/Scopus-wordcloud.R"))
+Scopus.wordcloud
 ```
+
+Areas majors pour ERPI selon Scopus:
+
+```{r}
+kable(head(Domaines, 10))
+```
+
+
+
+### Scimago
+
+
+
+```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=FALSE, eval=FALSE}
+source(here("R/Scimago.R"))
+Scimago
+```
+
+
+
 
 ### Analyse CiteScore 
 
-Scopus utilise cette mésure au lieu d'Impact factor utilisé par Thomson-Reuters
+Scopus utilise cette mésure au lieu d'Impact factor utilisé par Thomson-Reuters: 
 
 ```{r Citescore}
-
-# Obtaining the CIteScore  
-Citescore <-  Scopus %>% select(Journal, CiteScore) %>% unique()
-
-Articles <- 
-  HAL %>% 
-  filter(Type.document == "ART") %>% 
-  filter(Scopus == "Oui") %>% 
-  left_join(Citescore, by= "Journal")  
-  
-Articles$Year <- as.factor(Articles$Year)
-
-Articles %>% 
-  ggplot( aes(x=Year, y=CiteScore)) +
-    geom_boxplot(fill="slateblue", alpha=0.5) +
-  labs(x="Années", y="CiteScore", title = "Profile CiteScore de l'ERPI", subtitle = "") +
-  theme_fabio()
-```
-
-
-## Quartiles of the Publications
-
-```{r}
-
-Qs <- 
-  HAL %>% 
-  filter(Type.document == "ART") %>% 
-  filter(Scopus == "Oui") %>% 
-  left_join(Scopus, by= "Journal") %>% 
-  select("Scopus Sub-Subject Area") %>% 
-  group_by(`Scopus Sub-Subject Area`) %>% 
-  tally(sort = TRUE, name = "Frequency") 
-  
-
-
+#source(here("R/Citescore.R"))
 ```
 
 
 
-## Analyse JCR (Impact Factor)
-
-```{r}
-
-  
-  
-
-
-```
-
-
-<!-- ### Scimago Engineering -->
-
-```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=FALSE, eval=FALSE}
-
-Articles %>% group_by(Year, `Scimago<br/>Engineering`) %>% tally(name = "Quantity") %>% 
-  ggplot(aes(x=Year, y=Quantity, color = `Scimago<br/>Engineering` )) +
-  geom_line() + geom_point() +
-  labs(x="Années", y="Nombre des documents \n QuArtiles", title = "Production scientifique ERPI", subtitle = "Articles") +
-  scale_colour_discrete(name  = "Scimago (Engineering)" ) +
-
-                            #breaks=c("Q1", "Q2", "NA"),
-                            #labels=c("Q1", "Q2", "à Identifier")) +
-      # scale_shape_discrete(name  ="Type de document",
-      #                       breaks=c("ART", "COMM", "THESE"),
-      #                       labels=c("Article", "Conferences", "Phd Thèses"))
-  theme_fabio() +
-  coord_cartesian(ylim = c(0, 25))
-  
-```
-
-<!-- ### Scimago Desicion Sciences -->
-
-```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=FALSE, eval=FALSE }
-
-
-Publications %>% group_by(Year, `Scimago<br/>Decision<br/>Sciences`) %>% tally(name = "Quantity") %>% 
-  ggplot(aes(x=Year, y=Quantity, color = `Scimago<br/>Decision<br/>Sciences` )) +
-  geom_line() + geom_point() +
-  labs(x="Années", y="Nombre des documents \n QuArtiles", title = "Production scientifique ERPI", subtitle = "Articles") +
-  scale_colour_discrete(name  = "Scimago (Desicion Sciences)" ) +
-
-                            #breaks=c("Q1", "Q2", "NA"),
-                            #labels=c("Q1", "Q2", "à Identifier")) +
-      # scale_shape_discrete(name  ="Type de document",
-      #                       breaks=c("ART", "COMM", "THESE"),
-      #                       labels=c("Article", "Conferences", "Phd Thèses"))
-  theme_minimal() +
-  theme(axis.text=element_text(size=14, family = "Palatino"),
-        axis.title=element_text(size=16,face="bold", family = "Palatino"),legend.position="right")+
-  theme(plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)) +
-  coord_cartesian(ylim = c(0, 25))
-  
-```
-
-
-
-## Tranches d'Ages
-
-
+# Tranches d'Ages
 
 ```{r, include=FALSE}
-library("readxl")
-library(lubridate)
-
-onglet <- excel_sheets("Mauricio/Annexe-5.xlsx")
-Edades <- read_excel("Mauricio/Annexe-5.xlsx",
-                     sheet = onglet[4], skip = 32,
-                     col_names = c("Nom", "Prénom", "Sexe", "Corps-grade", "Type_emploi",
-                                   "Axe", "Date_naissance", "BAP", "HDR", "Employeur",
-                                   "Code_UAI", "Date_in", "Date_out"), 
-                     col_types = c( rep("text",6), "date", 
-                                    rep("text",4), "date", "date" 
-                                    ))
-# Filtering the data
-Edades <- Edades[1:44,]
-Edades$today <- Sys.time()
-
-Edades$ages = interval(start = Edades$Date_naissance, end = Edades$today) /
-        duration(num = 1, units = "years") %>% round(., digits = 0)
-
-Edades$rango <- ordered( cut(Edades$ages, breaks = c(seq(20,70,10)), 
-                           include.lowest = TRUE))
-# Deleting personnes 
-Excluidos <- Edades %>%
-  filter(Prénom %in% c('NOÉMIE', 'CEDRIC', 'GREGORY', "ALEXIS", "STÉPHANE", "PEDRO", "CHRISTIAN", "DANIEL ANDRES", "MARIE REINE", "PATRICK")) 
-
-Membres <- Edades %>% anti_join(Excluidos)
-
-
-
+source("R/Age.R")
 ```
 
 Membres (Prof, MDF, Admin et PostDoc/Chercheur contractuelle) présents à 2020 à l'ERPI:
@@ -686,11 +266,6 @@ Voila la liste des perssones à Dec 2020.
 paged_table(Membres %>% select( Prénom, Nom)) %>% arrange(Prénom)
 ```
 
-Un résume par Status
-
-```{r}
-paged_table(Membres %>% group_by(`Corps-grade`) %>% tally() %>% set_names("Status", "Quantité"))
-```
 
 Pyramide des ages
 
@@ -733,12 +308,13 @@ ggplot(data = piramide,
 
 # International Collaborations {#collaboration}
 
-```{r, include=FALSE, echo=FALSE}
+```{r, include=FALSE}
 library(rworldmap)
 library(maps)
 library(RColorBrewer)
 library(forcats)
 
+HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Labs", "Countries") 
 
 Countries <- paste(HAL$Countries,collapse=",")  
 Countries <- strsplit(Countries, ",")  

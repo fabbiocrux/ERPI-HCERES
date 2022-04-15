@@ -1,0 +1,86 @@
+---
+title: "ANNEX-A"
+output:
+   # bookdown::html_document2:
+   #   fig_caption: yes
+ # bookdown::pdf_document2:
+ #   keep_tex: true
+  bookdown::word_document2:
+    toc: false
+    fig_caption: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(flextable)
+library(tidyverse)
+```
+
+
+
+```{r Articles, message=FALSE, echo=FALSE, include=FALSE}
+
+table_1 <- read_csv("Articles.csv") %>% arrange(desc(Year), desc(Impact_factor_2019)) %>% select(-N)
+table_1$Journal <- str_to_title(table_1$Journal) 
+table_1 %>% flextable() %>%
+  set_caption("Articles ERPI 2016-2020") %>%
+  width(j=1:5, width = c(0.5, 2,2,1.5,0.5)) %>% 
+  fontsize(size = 7, part = "all") %>% 
+  theme_zebra()
+
+
+```
+
+
+
+```{r, message=FALSE, echo=FALSE, include=FALSE}
+Confs <- read_csv2("../HAL/ERPI-2016-2020.csv")
+Confs <- Confs %>% filter(Type.document == "COMM") %>% arrange(desc(Year))
+
+Confs <- Confs %>%  mutate(N=rownames(.)) %>% select(N, Year,Title, Authors, Conference) 
+
+
+Confs %>% flextable() %>%
+  set_caption("Conferences ERPI 2016-2020") %>%
+  width(j=1:5, width = c(0.5, 0.5, 2,2,1.5 )) %>% 
+  fontsize(size = 7, part = "all") %>% 
+  theme_zebra()
+
+```
+
+
+
+```{r, message=FALSE, echo=FALSE, include=FALSE}
+Annex <- read_csv2("../HAL/ERPI-2016-2020.csv")
+Annex <- Annex %>% filter(Type.document == "COUV") %>% arrange(desc(Year))
+
+Annex <- Annex %>%  mutate(N=rownames(.)) %>% select(N, Year,Title, Authors, Url) 
+
+
+Annex %>% flextable() %>%
+  set_caption("Conferences ERPI 2016-2020") %>%
+  width(j=1:5, width = c(0.3, 0.4, 2,2,1.5 )) %>% 
+  fontsize(size = 7, part = "all") %>% 
+  theme_zebra()
+
+```
+
+
+
+
+```{r, message=FALSE, echo=FALSE}
+Annex <- read_csv2("../HAL/ERPI-2016-2020.csv")
+Annex <- Annex %>% filter(Type.document == "DOUV") %>% arrange(desc(Year))
+
+Annex <- Annex %>%  mutate(N=rownames(.)) %>% select(N, Year,Title, Authors, Url) 
+
+Annex %>% flextable() %>%
+  set_caption("Direction Ouvrages ERPI 2016-2020") %>%
+  width(j=1:5, width = c(0.3, 0.4, 2,2,1.5 )) %>% 
+  fontsize(size = 7, part = "all") %>% 
+  theme_zebra()
+
+```
+
+
+
