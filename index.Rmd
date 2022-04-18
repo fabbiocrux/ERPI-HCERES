@@ -269,7 +269,7 @@ paged_table(Members %>% select( Prenom, Nom)) %>% arrange(Prenom)
 
 Pyramide des ages:
 
-```{r}
+```{r, fig.width=7, fig.height=4}
 library(lemon)
 
 status <- Members %>% select(Prenom, Corps_grade, rango, Sexe) 
@@ -291,21 +291,50 @@ status %>%
         ) +
    theme_fabio() +
    #annotate(geom="text", x=0, y=30, label="Hommes",color="red")+
-   scale_fill_brewer(name = "Sex", labels = c("Feminin", "Masculin"),palette = "Set2") 
+   scale_fill_brewer(name = "Sex", labels = c("Feminin", "Masculin"),palette = "Set2") +
+   theme(legend.position="bottom")
 ```
 
 Piramide de profiles:
 
 
-```{r}
+```{r, fig.width=9, fig.height=4}
+Empleo <- tribble(
+   ~Emploi,	~label,
+"EC_tit", 	"Enseignants-chercheurs titulaires",
+"EC_aut", "Autres enseignants-chercheurs",
+"CH_tit", "Chercheurs titulaires ou CDI",
+"CH_aut", "Autres chercheurs",
+"AP_tit", "Autres personnels titulaires ou CDI",
+"AP_aut", "Autres personnels"
+)
+
+
 status <- Members %>% select(Prenom, Emploi, Corps_grade, rango, Sexe) 
 status$value = 1
-#status$Corps_grade %>% as.factor() %>% levels()
+status <- status %>% left_join(Empleo, by = "Emploi")
+status <- status %>% 
+   mutate(Type.emploi = factor(paste(Emploi,label, sep = ": ")))
 
+status <- status %>% 
+   mutate(Type.emploi = 
+             factor(Type.emploi,
+               levels = c("EC_tit: Enseignants-chercheurs titulaires",
+                          "EC_aut: Autres enseignants-chercheurs",
+                          "CH_aut: Autres chercheurs",
+                          "AP_tit: Autres personnels titulaires ou CDI",
+                          "AP_aut: Autres personnels",
+                          "NA: NA" )
+                               ))
+
+#status$Type.emploi %>% levels()
+#status %>% mutate(Emploi = factor(Emploi, levels = Empleo$Emploi))
+
+#status$Corps_grade %>% as.factor() %>% levels()
 status %>% 
    ggplot(aes(y = ifelse(test = Sexe == "H", yes = value, no = -value), 
               x = rango,
-              fill = Emploi)) +
+              fill = Type.emploi)) +
    geom_bar(stat = "identity") +
    scale_y_symmetric(labels = abs, n.breaks=10) +
    coord_flip()+
@@ -318,7 +347,13 @@ status %>%
    theme_fabio() +
    annotate(geom="text", x=6, y=5, label="Hommes",color="Blue")+
    annotate(geom="text", x=6, y=-5, label="Femmes",color="Blue")+
-   scale_fill_brewer(palette = "Set2") 
+   scale_fill_brewer(name = "Type d'Emploi", 
+                     #breaks = Empleo$Emploi,
+                     #labels = Empleo$label,
+                     palette = "Set2") +
+   theme(legend.position="bottom")
+
+
 ```
 
 
