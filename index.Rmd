@@ -283,7 +283,7 @@ status %>%
    #scale_y_continuous(labels = abs) +
    scale_y_symmetric(labels = abs, n.breaks=10) +
    coord_flip()+
-   
+   geom_hline(yintercept=0) +
    labs(y="Nombre des personnes", 
         x="Intervalle",
         title = "Tranche d'ages à l'ERPI",
@@ -308,6 +308,7 @@ status %>%
    geom_bar(stat = "identity") +
    scale_y_symmetric(labels = abs, n.breaks=10) +
    coord_flip()+
+   geom_hline(yintercept=0) +
    labs(y="Nombre des personnes", 
         x="Intervalle",
         title = "Tranche d'ages à l'ERPI",
@@ -316,8 +317,6 @@ status %>%
    theme_fabio() +
    scale_fill_brewer(palette = "Set2") 
 ```
-
-
 
 
 ```{r, layout="l-body-outset", fig.width=6, fig.height=4, include=FALSE, eval=FALSE}
