@@ -290,7 +290,8 @@ status %>%
         subtitle = paste0("Effectif total du personnel: ", nrow(status)) 
         ) +
    theme_fabio() +
-   scale_fill_brewer(palette = "Set2") 
+   #annotate(geom="text", x=0, y=30, label="Hommes",color="red")+
+   scale_fill_brewer(name = "Sex", labels = c("Feminin", "Masculin"),palette = "Set2") 
 ```
 
 Piramide de profiles:
@@ -315,6 +316,8 @@ status %>%
         subtitle = paste0("Effectif total du personnel: ", nrow(status)) 
         ) +
    theme_fabio() +
+   annotate(geom="text", x=6, y=5, label="Hommes",color="Blue")+
+   annotate(geom="text", x=6, y=-5, label="Femmes",color="Blue")+
    scale_fill_brewer(palette = "Set2") 
 ```
 
