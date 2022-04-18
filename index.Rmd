@@ -232,7 +232,7 @@ kable(head(Domaines, 10))
 
 
 
-```{r, layout="l-body-outset", fig.width=8, fig.height=4, include=FALSE, eval=FALSE}
+```{r, layout="l-body-outset", fig.width=8, fig.height=4}
 source(here("R/Scimago.R"))
 Scimago
 ```
@@ -256,40 +256,73 @@ Scopus utilise cette mésure au lieu d'Impact factor utilisé par Thomson-Reuter
 source("R/Age.R")
 ```
 
-Membres (Prof, MDF, Admin et PostDoc/Chercheur contractuelle) présents à 2020 à l'ERPI:
-**Quantité total des perssones** : `r nrow(Membres)`
+Membres (Prof, MDF, Admin et PostDoc/Chercheur contractuelle) présents à 2021 à l'ERPI:
 
+- **Quantité total des perssones** : **`r nrow(Members)`**
 
-Voila la liste des perssones à Dec 2020.
+Voila la liste des perssones à Dec 2021.
 
 ```{r}
-paged_table(Membres %>% select( Prénom, Nom)) %>% arrange(Prénom)
+paged_table(Members %>% select( Prenom, Nom)) %>% arrange(Prenom)
 ```
 
 
-Pyramide des ages
+Pyramide des ages:
 
-```{r, layout="l-body-outset", fig.width=6, fig.height=4, include=TRUE}
+```{r}
 library(lemon)
-piramide <- Membres %>% group_by(rango, Sexe) %>% tally()
-ggplot(data = piramide, 
-       mapping = aes(x = ifelse(test = Sexe == "H", yes = -n, no = n), 
-                     y = rango, fill = Sexe)) +
-  geom_col() +
-  scale_x_symmetric(labels = abs, n.breaks=10) +
-  #scale_x_continuous(breaks = c(-6,-4,-2,0, 2, 4, 6)) +
-  
-  labs(x="Nombre des personnes", y="Intervalle", subtitle = "Tranche d'ages à l'ERPI", title = "") +
-  theme_fabio() +
-  scale_fill_brewer(palette = "Set2") 
 
+status <- Members %>% select(Prenom, Corps_grade, rango, Sexe) 
+
+status %>% 
+   ggplot( aes(x = rango, fill = Sexe)) + 
+   geom_bar(data = subset(status, Sexe == "H")) + 
+   geom_bar(data = subset(status, Sexe == "F"), 
+            mapping = aes(y = - ..count.. ),
+            position = "identity") +
+   #scale_y_continuous(labels = abs) +
+   scale_y_symmetric(labels = abs, n.breaks=10) +
+   coord_flip()+
+   
+   labs(y="Nombre des personnes", 
+        x="Intervalle",
+        title = "Tranche d'ages à l'ERPI",
+        subtitle = paste0("Effectif total du personnel: ", nrow(status)) 
+        ) +
+   theme_fabio() +
+   scale_fill_brewer(palette = "Set2") 
+```
+
+Piramide de profiles:
+
+
+```{r}
+status <- Members %>% select(Prenom, Emploi, Corps_grade, rango, Sexe) 
+status$value = 1
+#status$Corps_grade %>% as.factor() %>% levels()
+
+status %>% 
+   ggplot(aes(y = ifelse(test = Sexe == "H", yes = value, no = -value), 
+              x = rango,
+              fill = Emploi)) +
+   geom_bar(stat = "identity") +
+   scale_y_symmetric(labels = abs, n.breaks=10) +
+   coord_flip()+
+   labs(y="Nombre des personnes", 
+        x="Intervalle",
+        title = "Tranche d'ages à l'ERPI",
+        subtitle = paste0("Effectif total du personnel: ", nrow(status)) 
+        ) +
+   theme_fabio() +
+   scale_fill_brewer(palette = "Set2") 
 ```
 
 
-Pyramide des ages sans les chercheur contractuelles / Postdocs
 
-```{r, layout="l-body-outset", fig.width=6, fig.height=4, include=TRUE}
 
+```{r, layout="l-body-outset", fig.width=6, fig.height=4, include=FALSE, eval=FALSE}
+
+# Pyramide des ages sans les chercheur contractuelles / Postdocs
 piramide <- Membres %>% filter(Type_emploi != "Ch_aut") %>% group_by(rango, Sexe) %>% tally()
 
 ggplot(data = piramide, 

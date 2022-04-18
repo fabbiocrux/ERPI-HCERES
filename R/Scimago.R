@@ -6,7 +6,7 @@ Scimago <-
    tally(name = "Quantity") %>% 
    drop_na()
 
-Scimago.graph <- 
+Scimago <- 
    Scimago %>%    
    ggplot(aes(x=Year, y=Quantity, fill = `Quartile-Scimago-Engineering` )) +
    geom_bar(stat = "identity") +
@@ -25,4 +25,3 @@ Scimago.graph <-
    theme_fabio() +
    coord_cartesian(ylim = c(0, 8))
 
-Scimago.table
