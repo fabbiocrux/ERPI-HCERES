@@ -15,7 +15,8 @@ Journals <-
    theme_fabio() +
    #theme_minimal(base_size = 15, base_family = "Palatino") +
    labs(x = "", y = "Quantité  d'article", title = "Journaux scientifiques principaux",
-        subtitle = "Minimum 2 articles dans ces Journaux") +
+        subtitle = "Minimum 2 articles dans ces Journaux",
+        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y') )) + 
    #    theme_ipsum() +
    theme(
       panel.grid.minor.y = element_blank(),

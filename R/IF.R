@@ -82,8 +82,8 @@ Impact.Factor <-
    theme_fabio() +
    #theme_minimal(base_size = 15, base_family = "Palatino") +
    labs(x = "", y = "Impact Factor", title = "Journaux scientifiques principaux",
-        subtitle = "(Quantité d'articles publies par ERPI)") +
-   #    theme_ipsum() +
+        subtitle = "(Quantité d'articles publies par ERPI)",
+        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
    theme(
       panel.grid.minor.y = element_blank(),
       panel.grid.major.y = element_blank(),

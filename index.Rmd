@@ -120,10 +120,9 @@ Workshop()
 
 
 
-# Document froms HAL 2016 - 2020
+# Document froms HAL 2016 - 2022
 
 Liste de production scientific:  Last update from HAL  "`r format(Sys.time(), '%d %B, %Y')`"
-
 
 ```{r HAL, include=FALSE}
 # ERPI PUblications
@@ -168,7 +167,7 @@ reactable(ERPI,
           filterable = TRUE, 
           bordered = TRUE, striped = TRUE, highlight = TRUE,
           compact = TRUE,
-          showPageSizeOptions = TRUE, pageSizeOptions = c(1,2,5, 10, 50,100), defaultPageSize = 2
+          showPageSizeOptions = TRUE, pageSizeOptions = c(1,2,5, 10, 50,100), defaultPageSize = 1
           #groupBy = "Year"
 )
 ```
@@ -208,7 +207,8 @@ Articles <-
 Articles %>% group_by(Year, Scopus) %>% tally(name = "Quantity") %>% 
   ggplot(aes(x=Year, y=Quantity, color = Scopus )) +
   geom_line() + geom_point() +
-  labs(x="Années", y="Nombre des documents", title = "Articles listés dans la base SCOPUS", subtitle = "") +
+  labs(x="Années", y="Nombre des documents", title = "Articles listés dans la base SCOPUS", subtitle = "",
+       caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y')))  +
   theme_fabio()
 ```
 
@@ -240,9 +240,8 @@ Scimago
 
 
 
-### Analyse CiteScore 
-
-Scopus utilise cette mésure au lieu d'Impact factor utilisé par Thomson-Reuters: 
+<!-- ### Analyse CiteScore  -->
+<!-- Scopus utilise cette mésure au lieu d'Impact factor utilisé par Thomson-Reuters:  -->
 
 ```{r Citescore}
 #source(here("R/Citescore.R"))
@@ -287,8 +286,8 @@ status %>%
    labs(y="Nombre des personnes", 
         x="Intervalle",
         title = "Tranche d'ages à l'ERPI",
-        subtitle = paste0("Effectif total du personnel: ", nrow(status)) 
-        ) +
+        subtitle = paste0("Effectif total du personnel: ", nrow(status)),
+        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
    theme_fabio() +
    #annotate(geom="text", x=0, y=30, label="Hommes",color="red")+
    scale_fill_brewer(name = "Sex", labels = c("Feminin", "Masculin"),palette = "Set2") +
@@ -342,8 +341,8 @@ status %>%
    labs(y="Nombre des personnes", 
         x="Intervalle",
         title = "Tranche d'ages à l'ERPI",
-        subtitle = paste0("Effectif total du personnel: ", nrow(status)) 
-        ) +
+        subtitle = paste0("Effectif total du personnel: ", nrow(status)),
+        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
    theme_fabio() +
    annotate(geom="text", x=6, y=5, label="Hommes",color="Blue")+
    annotate(geom="text", x=6, y=-5, label="Femmes",color="Blue")+
@@ -369,7 +368,11 @@ ggplot(data = piramide,
   scale_x_symmetric(labels = abs, n.breaks=10) +
   #scale_x_continuous(breaks = c(-6,-4,-2,0, 2, 4, 6)) +
   
-  labs(x="Nombre des personnes", y="Intervalle", subtitle = "Tranche d'ages à l'ERPI\n(Sans chercheurs contractuelles)", title = "") +
+  labs(x="Nombre des personnes", 
+       y="Intervalle", 
+       subtitle = "Tranche d'ages à l'ERPI\n(Sans chercheurs contractuelles)", 
+       title = "",
+       caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
   theme_fabio() +
   scale_fill_brewer(palette = "Set2") 
 

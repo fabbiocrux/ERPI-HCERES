@@ -9,7 +9,11 @@ Production <-
    Production %>% group_by(Year, Type.document) %>% tally(name = "Quantity") %>% 
    ggplot(aes(x=Year, y=Quantity, color = Type.document )) +
    geom_line() + geom_point() +
-   labs(x="Années", y="Nombre des documents", title = "Production scientifique ERPI", subtitle = "Articles, Conferences  et Thèses doctorat") +
+   labs(x="Années", 
+        y="Nombre des documents", 
+        title = "Production scientifique ERPI", 
+        subtitle = "Articles, Conferences  et Thèses doctorat",
+        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y') )) +
    scale_colour_discrete(name  ="Total par type\nde publication",
                          breaks=c("ART", "COMM", "THESE"),
                          labels=c(paste0("Articles = ", total$total[1]),

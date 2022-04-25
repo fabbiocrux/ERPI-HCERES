@@ -1,7 +1,7 @@
 
 Criteria <- tribble(
    ~Type,  ~Production,
-   "Articles scientifiques", "77",
+   "Articles scientifiques", "97",
    "Articles de sythèse / revues bibliographiques", "",
    "Autres articles (articles publiés dans des revues professionnelles ou techniques, etc)", " ",
    
@@ -10,9 +10,9 @@ Criteria <- tribble(
    "Direction et coordination d'ouvrages scientifiques / édition scientifique en anglais ou dans une autre langue étrangère", " ",
    "Chapitres d'ouvrage", " ",
    "Chapitres d'ouvrages en anglais ou dans une autre langue étrangère", " ",
-   "Thèse éditées", "16",
+   "Thèse éditées", "21",
    "Editions d'actes de colloques / congrès", "",
-   "Articles publiés dans des actes de colloques / congrès", "81",
+   "Articles publiés dans des actes de colloques / congrès", "116",
    "Autres produits présentés dans des colloques / congrès et des séminaires de recherche", "",
    
    "Logiciels", "",

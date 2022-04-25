@@ -14,8 +14,8 @@ Scimago <-
    labs(x="Années", 
         y="Nombre des documents \n QuArtiles", 
         title = "Production scientifique ERPI", 
-        subtitle = paste0("Articles réferences: ", sum(Scimago$Quantity))
-   )+
+        subtitle = paste0("Articles réferences: ", sum(Scimago$Quantity)),
+        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
    scale_x_continuous(breaks = c(2016:2022))  +
    scale_fill_brewer(name  = "Scimago (Engineering)",
                      palette = "Blues",
