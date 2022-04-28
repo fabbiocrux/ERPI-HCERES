@@ -1,94 +1,58 @@
-# Impact Factor
-JCR <- read_csv("JCR/JCR.csv", skip = 1) %>% 
-   rename(Journal=`Full Journal Title`,
-          Impact_factor_2019= `Journal Impact Factor`) %>% 
-   select(Journal, Impact_factor_2019)
-JCR$Journal = tolower(JCR$Journal)
+# Grafica de Evolution ----
+IF.evolution <- 
+   Articles %>% 
+   #select(Year, Impact.Factor) %>% 
+   #replace_na( list( Impact.Factor =  'No Impact Factor')) %>% 
+   group_by(Year, IF) %>% 
+   tally(name = "Quantity") 
 
 
 
-# IF manual ----
-IF_manual <- tibble(
-   Journal=c("technological forecasting and social change",
-             "geoderma",
-             "resources, conservation and recycling",
-             "international journal of disaster risk reduction",
-             "the canadian journal of chemical engineering",
-             "creativity and innovation management",
-             "ai edam",
-             "international review of administrative sciences",
-             "industrial marketing management",
-             "renewable and sustainable energy reviews",
-             "chemical engineering research and design",
-             "ecological indicators",
-             "thinking skills and creativity"
-   ),
-   Impact_factor_2019 = c(5.846,
-                          4.848,
-                          8.086,
-                          2.896,
-                          1.687,
-                          2.113,
-                          1.119,
-                          2.219,
-                          4.695,
-                          12.110,
-                          3.350,
-                          4.229,
-                          2.068)
-)
 
-JCR <- JCR %>% rbind(IF_manual)
-
-# Selectiing articles
-Articles <- 
-   ERPI %>% filter(Type.document == "ART") %>% 
-   arrange(desc(Year)) %>% 
-   select(Year, Title, Authors, Journal)
-#names(ERPI)
-
-Articles <- Articles %>% left_join(JCR, by= "Journal")
-
-library(stringr)
+# Mean IF value
+IF.media <- 
+Articles %>% 
+   filter(IF == "Avec FI") %>% 
+   group_by(Year) %>% 
+   summarise(IF.mean = mean(Impact.Factor)) 
 
 
-# Impact Factor ----
-IF <- 
-   Articles  %>% 
-   drop_na(Impact_factor_2019) %>% 
-   group_by(Journal) %>% 
-   summarise(Quantity=n()) 
 
-IF <- 
-   IF %>% 
-   left_join(Articles %>% select(Journal,Impact_factor_2019) %>%
-                unique(), by="Journal") %>% 
-   arrange(Impact_factor_2019) 
+# Value used to transform the data
 
-IF <- 
-   IF %>% mutate(Journal=factor(Journal, Journal))
-
-IF$Journal <- str_to_title(IF$Journal) 
-
-Impact.Factor <- 
-   IF %>%
-   #filter(Quantity >= 2) %>%
-   mutate(Journal=factor(Journal, Journal)) %>%
-   ggplot( aes(x=Journal, y=Impact_factor_2019) ) +
-   geom_segment( aes(x=Journal ,xend=Journal, y=0, yend=Impact_factor_2019), color="grey") +
-   geom_point(size=3, color="#69b3a2") +
-   geom_text( label=paste0("(", IF$Quantity, ")"), nudge_x = 0, nudge_y = 0.45, check_overlap = T, size=3, color="#69b3a2" )+
-   coord_flip() +
-   theme_fabio() +
-   #theme_minimal(base_size = 15, base_family = "Palatino") +
-   labs(x = "", y = "Impact Factor", title = "Journaux scientifiques principaux",
-        subtitle = "(Quantité d'articles publies par ERPI)",
+IF.evolution <- 
+   IF.evolution %>%    
+   ggplot(aes(x=Year)) +
+   geom_bar(aes(y=Quantity, fill = IF, label = Quantity), stat="identity") + #aes(y=Quantity, fill = IF, label = Quantity),
+   geom_line(data =IF.media,   aes(y = IF.mean*5)) +
+   geom_point(data =IF.media,   aes(y = IF.mean*5)) +
+   scale_y_continuous(
+      # Features of the first axis
+      name = "Nombre des documents",
+      # Add a second axis and specify its features
+      sec.axis = sec_axis(~./5, 
+                          name="Facteur d'Impact moyenne",
+                          breaks = c(0:5)
+      )
+   ) + 
+   labs(x="Années", 
+        #y="", 
+        title = "Production scientifique ERPI", 
+        subtitle = paste0("Articles scientifiques: ", sum(IF.evolution$Quantity)),
         caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
-   theme(
-      panel.grid.minor.y = element_blank(),
-      panel.grid.major.y = element_blank(),
-      legend.position="none"
-   ) +
-   xlab("")
+   scale_x_continuous(breaks = c(2016:2022))  +
+   scale_fill_manual(name  = "Facteur d'Impact",
+                     values = rev(brewer.pal(6, "Blues")[c(2,5)]))+   
+   #scale_fill_brewer(name  = "Quartiles\nScimago",
+   #                   palette = "Blues",
+   #                   direction = 1)  +
+   theme_fabio() +
+   coord_cartesian(ylim = c(0, 30)) +
+   geom_text(aes(y=Quantity, fill = IF, label = Quantity),
+             size = 3, 
+             position = position_stack(vjust = 0.5)) +
+   geom_segment(aes(x = 2020.7, y = 25, xend = 2021.2, yend = 25),
+                arrow = arrow(length = unit(0.2, "cm")))
 
-rm(IF, Articles)
+
+

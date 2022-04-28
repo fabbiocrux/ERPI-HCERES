@@ -55,7 +55,9 @@ library(jsonlite)
 library(tidyverse)
 library(plotly)
 library(reshape2)
-
+library(RColorBrewer)
+# install.packages("devtools")
+devtools::install_github("muschellij2/rscopus")
 
 theme_fabio <- function(base_size = 12, base_family = "Palatino"){
   theme_minimal(base_size = base_size, base_family = base_family) %+replace%
@@ -131,7 +133,7 @@ source(here("R/Hal-data.R"))
 #names(ERPI)
 ERPI <- 
    ERPI %>% 
-   select(Year, Type.document , Title, Authors, DOI, Journal, "Quartile-Scimago-Engineering", Scopus, Publisher, Conference ,  Url, H.Factor)
+   select(Year, Type.document , Title, Authors, DOI, Journal, QScimago, Scopus, Publisher, Conference ,  Url, H.Factor)
 ERPI <- ERPI %>%arrange(desc(Year), Type.document)
 #write_excel_csv2(ERPI, "HAL/ERPI-2016-2022.csv")
 
@@ -175,6 +177,7 @@ reactable(ERPI,
 
 ## Evolution of ERPI's Scientific production
 
+Articles, Conferences et Thèses.
 Mise à jour: `r format(Sys.time(), '%d %B, %Y')`
 
 ```{r Production_total, layout="l-body-outset", fig.width=8, fig.height=4 }
@@ -193,9 +196,17 @@ Journals
 
 Impact Factor des journaux de publication ERPI:
 
-```{r, layout="l-body-outset", fig.width=8, fig.height=6 }
-source(here("R/IF.R"))
+```{r, layout="l-body-outset", fig.width=8, fig.height=7 }
+source(here("R/Articles.R"))
+source(here("R/Profile-IF.R"))
 Impact.Factor
+```
+
+Impact Factor 
+
+```{r, fig.width=8, fig.height=5}
+source(here("R/IF.R"))
+IF.evolution
 ```
 
 Profile des journaux qui sont en SCOPUS:
@@ -203,8 +214,7 @@ Profile des journaux qui sont en SCOPUS:
 ```{r Scopus-1}
 Articles <- 
    ERPI %>% filter(Type.document == "ART") %>% arrange(desc(Year))
-
-Articles %>% group_by(Year, Scopus) %>% tally(name = "Quantity") %>% 
+Articles %>% group_by(Year, Scopus) %>% tally(name = "Quantity") %>%
   ggplot(aes(x=Year, y=Quantity, color = Scopus )) +
   geom_line() + geom_point() +
   labs(x="Années", y="Nombre des documents", title = "Articles listés dans la base SCOPUS", subtitle = "",
@@ -232,7 +242,7 @@ kable(head(Domaines, 10))
 
 
 
-```{r, layout="l-body-outset", fig.width=8, fig.height=4}
+```{r, layout="l-body-outset", fig.width=8, fig.height=5}
 source(here("R/Scimago.R"))
 Scimago
 ```
@@ -389,6 +399,13 @@ library(forcats)
 
 HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Labs", "Countries") 
 
+# HAL <- read_csv("HAL/2022-04-13-HAL-full.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference") 
+
+## Filtering 2016 and tolower
+HAL <- HAL %>% filter(Year >= 2016, Year<=2021)
+HAL$Journal = tolower(HAL$Journal)
+
+
 Countries <- paste(HAL$Countries,collapse=",")  
 Countries <- strsplit(Countries, ",")  
 Countries <- tibble(Paises=Countries[[1]])
@@ -449,7 +466,6 @@ ggplot(Countries) +
   coord_cartesian(xlim = c(-150, -20),ylim = c(-50, 70), expand = TRUE)
   #coord_sf(xlim = c(-20, 40), ylim = c(15, 70), expand = TRUE) 
   
-
 ```
 
  
