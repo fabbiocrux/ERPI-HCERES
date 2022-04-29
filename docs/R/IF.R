@@ -54,5 +54,8 @@ IF.evolution <-
    geom_segment(aes(x = 2020.7, y = 25, xend = 2021.2, yend = 25),
                 arrow = arrow(length = unit(0.2, "cm")))
 
+# ggsave(filename="Figures/IF.evolution.png",
+# plot = IF.evolution,
+# width = 9, height = 6, dpi="print" )
 
 

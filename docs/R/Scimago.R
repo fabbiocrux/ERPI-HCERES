@@ -39,4 +39,5 @@ Scimago <-
    geom_text(size = 3, 
              position = position_stack(vjust = 0.5))
 
+#ggsave("Figures/Scimago.png", width = 9, height = 6, dpi="print" )
 #   my_colors <- RColorBrewer::brewer.pal(6, "Blues")[2:6]

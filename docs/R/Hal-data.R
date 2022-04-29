@@ -4,7 +4,7 @@
 HAL <- read_csv("HAL/2022-04-13-HAL-full.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference") 
 
 ## Filtering 2016 and tolower
-HAL <- HAL %>% filter(Year >= 2016, Year<=2021)
+HAL <- HAL %>% filter(Year >= 2011, Year<=2021)
 HAL$Journal = tolower(HAL$Journal)
 
 #HAL %>% group_by(Type.document) %>% tally()

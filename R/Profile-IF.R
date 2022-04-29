@@ -34,8 +34,9 @@ Impact.Factor <-
    ) +
    xlab("")
 
-# ggsave(Impact.Factor, 
-#         path = "Figures/Impact.Factor.png",
+# ggsave(filename="Figures/Impact.Factor.png",
+#         plot = Impact.Factor,
 #         width = 8, height = 7, dpi="print" )
+
 
 rm(IF)

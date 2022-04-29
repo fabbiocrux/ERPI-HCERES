@@ -207,6 +207,9 @@ Impact Factor
 ```{r, fig.width=8, fig.height=5}
 source(here("R/IF.R"))
 IF.evolution
+#ggsave(filename="Figures/IF.evolution.png", plot = IF.evolution, width = 9, height = 5, dpi="print" )
+
+
 ```
 
 Profile des journaux qui sont en SCOPUS:
@@ -245,6 +248,8 @@ kable(head(Domaines, 10))
 ```{r, layout="l-body-outset", fig.width=8, fig.height=5}
 source(here("R/Scimago.R"))
 Scimago
+#ggsave(filename="Figures/Scimago.jpg", plot = Scimago, width = 9, height = 5, dpi="print" )
+
 ```
 
 

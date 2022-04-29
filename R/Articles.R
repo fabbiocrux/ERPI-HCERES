@@ -92,6 +92,11 @@ Articles <-
       Year == 2018 ~ IF2018,
       Year == 2017 ~ IF2017,
       Year == 2016 ~ IF2016,
+      Year == 2015 ~ IF2015,
+      Year == 2014 ~ IF2014,
+      Year == 2013 ~ IF2013,
+      Year == 2012 ~ IF2012,
+      Year == 2011 ~ IF2011,
       TRUE ~  0
    ))
 
