@@ -86,6 +86,7 @@ Articles <-
 Articles <- 
    Articles %>% 
    mutate(Impact.Factor = case_when(
+      Year == 2022 ~ IF2020,
       Year == 2021 ~ IF2020,
       Year == 2020 ~ IF2020,
       Year == 2019 ~ IF2019,

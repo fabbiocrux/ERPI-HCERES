@@ -57,7 +57,7 @@ library(plotly)
 library(reshape2)
 library(RColorBrewer)
 # install.packages("devtools")
-devtools::install_github("muschellij2/rscopus")
+#devtools::install_github("muschellij2/rscopus")
 
 theme_fabio <- function(base_size = 12, base_family = "Palatino"){
   theme_minimal(base_size = base_size, base_family = base_family) %+replace%
@@ -301,12 +301,17 @@ status %>%
    labs(y="Nombre des personnes", 
         x="Intervalle",
         title = "Tranche d'ages à l'ERPI",
-        subtitle = paste0("Effectif total du personnel: ", nrow(status)),
-        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
+        subtitle = paste0("Effectif total du personnel à la date de 31/12/2021: ", nrow(status)),
+        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) +
    theme_fabio() +
    #annotate(geom="text", x=0, y=30, label="Hommes",color="red")+
    scale_fill_brewer(name = "Sex", labels = c("Feminin", "Masculin"),palette = "Set2") +
    theme(legend.position="bottom")
+
+#ggsave(filename="Figures/Edades.jpg",  width = 9, height = 5, dpi="print" )
+#?write_csv2(x=Members, file = "ERPI/Edades.csv" )
+
+library(tidyverse)
 ```
 
 Piramide de profiles:

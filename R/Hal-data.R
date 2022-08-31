@@ -1,10 +1,10 @@
 # Data HAL ----
-#HAL <- read_csv("HAL/HAL-May-2021.csv") %>% select(uri_s, title_s, authFullName_s, docType_s, doiId_s, publicationDateY_i, journalTitle_s, journalPublisher_s, conferenceTitle_s, language_s )
-#HAL <- read_csv("HAL/HAL-June-2021.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference", "Labs", "Countries") 
-HAL <- read_csv("HAL/2022-04-13-HAL-full.csv") %>% set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference") 
+HAL <- 
+   read_csv("HAL/HAL-August-2022.csv") %>% 
+   set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference") 
 
 ## Filtering 2016 and tolower
-HAL <- HAL %>% filter(Year >= 2011, Year<=2021)
+HAL <- HAL %>% filter(Year >= 2011, Year<=2022)
 HAL$Journal = tolower(HAL$Journal)
 
 #HAL %>% group_by(Type.document) %>% tally()
@@ -24,7 +24,6 @@ Journal_scopus <- factor(Scopus$Journal) %>% unique()
 
 #HAL <- HAL %>% left_join(Scopus, by= "Journal")
 
-names(HAL)
 HAL <- 
    HAL %>%
    mutate(
@@ -32,7 +31,6 @@ HAL <-
          HAL$Journal %in% Journal_scopus ~ "Oui",
          TRUE                      ~ "Non"
       ))
-
 
 
 
@@ -72,7 +70,6 @@ Scimago$Journal = tolower(Scimago$Journal)
 # Exporting
 ERPI <- left_join(HAL, Scimago, by="Journal" )
 #ERPI <- left_join(ERPI, DS.Scimago, by="Journal" )
-
 
 rm(HAL, Scimago, Scopus, Journal_scopus)
 
