@@ -76,5 +76,5 @@ Scimago <-
    geom_segment(aes(x = 2020.7, y = 25, xend = 2021.2, yend = 25),
                 arrow = arrow(length = unit(0.2, "cm"))) 
 
-#ggsave("Figures/Scimago.png", width = 9, height = 6, dpi="print" )
+#ggsave("Figures/Scimago-August-2022.png", width = 9, height = 6, dpi="print" )
 #   my_colors <- RColorBrewer::brewer.pal(6, "Blues")[2:6]

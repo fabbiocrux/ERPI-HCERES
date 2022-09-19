@@ -70,7 +70,8 @@ theme_fabio <- function(base_size = 12, base_family = "Palatino"){
       #legend.key=element_rect(colour=NA, fill =NA),
       #panel.grid = element_blank(),   
       #panel.border = element_rect(fill = NA, colour = "black", size=1),
-      #panel.background = element_rect(fill = "white", colour = "black"), 
+      panel.background = element_rect(fill = "white", colour = "black"),
+      plot.background = element_rect(fill = "white"),
       #strip.background = element_rect(fill = NA),
       #plot.title = element_text(family = "Palatino", color="#666666", face="bold", size=20, hjust=0)
       )
@@ -85,7 +86,6 @@ theme_fabio <- function(base_size = 12, base_family = "Palatino"){
 source("R/Overview-ERPI.R")
 Overview
 ```
-
 
 ---
 
@@ -112,7 +112,6 @@ Description = c(
    "Développer de nouvelles façons d’appliquer cette compétence. C’est mesuré sur la scène International")
 )
 ```
-
 
 ```{r, layout="l-page", fig.width=10, fig.height=10, cache=TRUE}
 source(here("Workshop/Workshop_2019.R"))
@@ -175,6 +174,10 @@ reactable(ERPI,
 ```
 
 
+
+
+
+
 ## Evolution of ERPI's Scientific production
 
 Articles, Conferences et Thèses.
@@ -207,7 +210,7 @@ Impact Factor
 ```{r, fig.width=8, fig.height=5}
 source(here("R/IF.R"))
 IF.evolution
-#ggsave(filename="Figures/IF.evolution.png", plot = IF.evolution, width = 9, height = 5, dpi="print" )
+#ggsave(filename="Figures/IF.evolution-August-2022.png", plot = IF.evolution, width = 9, height = 5, dpi="print" )
 
 
 ```
@@ -217,12 +220,19 @@ Profile des journaux qui sont en SCOPUS:
 ```{r Scopus-1}
 Articles <- 
    ERPI %>% filter(Type.document == "ART") %>% arrange(desc(Year))
-Articles %>% group_by(Year, Scopus) %>% tally(name = "Quantity") %>%
+
+Articles %>% 
+   group_by(Year, Scopus) %>% filter(Year > 2011) %>% 
+   tally(name = "Quantity") %>%
   ggplot(aes(x=Year, y=Quantity, color = Scopus )) +
   geom_line() + geom_point() +
+ scale_x_continuous(breaks = c(2016:2022))  +
   labs(x="Années", y="Nombre des documents", title = "Articles listés dans la base SCOPUS", subtitle = "",
        caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y')))  +
   theme_fabio()
+
+ggsave(filename="Figures/Scopus-perfil.jpg", width = 9, height = 5, dpi="print" )
+
 ```
 
 SCOPUS a une serie de Sous domaine lié à chaque journal. 

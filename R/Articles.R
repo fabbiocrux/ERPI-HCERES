@@ -43,6 +43,7 @@ JCR <-
    JCR_2016_2019 %>% 
    left_join(JCR2020, by = "Journal")
 
+# tolower the title
 JCR$Journal = tolower(JCR$Journal)
 
 
