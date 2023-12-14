@@ -45,7 +45,8 @@ Scimago <-
    ggplot(aes(x=Year)) +
    annotate("rect", xmin = 2015.5, xmax = 2021.5, ymin = -1, ymax = 30,
             alpha = .1,fill = "blue") +
-   geom_bar( aes(y=Quantity, fill = QScimago, label = Quantity), stat = "identity") +
+   geom_bar( aes(y=Quantity, fill = QScimago ), stat = "identity") +
+   #geom_text(aes(label= Quantity), vjust=0)
    geom_line(data =IF.media,   aes(y = IF.mean*5)) +
    geom_point(data =IF.media,   aes(y = IF.mean*5)) +
    scale_y_continuous(
@@ -59,9 +60,9 @@ Scimago <-
    labs(x="Années", 
         y="Nombre des documents", 
         title = "Production scientifique ERPI", 
-        subtitle = paste0("ACL 2016-2021: ", nrow(Articles %>% filter(Year >= 2016, Year<=2021))),
+        subtitle = paste0("ACL 2016-2023: ", nrow(Articles %>% filter(Year >= 2016, Year<=2021))),
         caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
-   scale_x_continuous(breaks = c(2016:2022))  +
+   scale_x_continuous(breaks = c(2016:2023))  +
    scale_fill_manual(name  = "Quartiles\nScimago",
                      values = rev(brewer.pal(6, "Blues")[2:6]))+   
    # ?scale_fill_brewer(name  = "Quartiles\nScimago",

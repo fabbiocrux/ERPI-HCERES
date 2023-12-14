@@ -28,7 +28,6 @@ author:
   #   affiliation: ERPI
   #   affiliation_url: https://erpi.univ-lorraine.fr/
   #   orcid_id: 0000-0003-4570-1989
-  #       
   # - first_name: "Fabio"
   #   last_name: "Cruz"
   #   url: https://erpi.univ-lorraine.fr/people/Fabio-Cruz/
