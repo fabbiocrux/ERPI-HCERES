@@ -60,7 +60,7 @@ Scimago <-
    labs(x="Années", 
         y="Nombre des documents", 
         title = "Production scientifique ERPI", 
-        subtitle = paste0("ACL 2016-2023: ", nrow(Articles %>% filter(Year >= 2016, Year<=2021))),
+        subtitle = paste0("ACL 2016-2023: ", nrow(Articles %>% filter(Year >= 2016, Year<=2023))),
         caption =  paste0("Denière mise à jour: ", format(Sys.time(), '%d/%m/%Y'))) + 
    scale_x_continuous(breaks = c(2016:2023))  +
    scale_fill_manual(name  = "Quartiles\nScimago",
@@ -77,5 +77,5 @@ Scimago <-
    geom_segment(aes(x = 2020.7, y = 25, xend = 2021.2, yend = 25),
                 arrow = arrow(length = unit(0.2, "cm"))) 
 
-#ggsave("Figures/Scimago-August-2022.png", width = 9, height = 6, dpi="print" )
+#ggsave("Figures/Scimago-December-2023.png", width = 9, height = 6, dpi="print" )
 #   my_colors <- RColorBrewer::brewer.pal(6, "Blues")[2:6]
