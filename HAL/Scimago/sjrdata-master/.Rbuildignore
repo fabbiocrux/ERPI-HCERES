@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+^_config.yml
+^dev$
+^cran-comments\.md$

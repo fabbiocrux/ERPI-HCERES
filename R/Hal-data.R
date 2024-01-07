@@ -1,9 +1,8 @@
 # Data HAL ----
-HAL_old <- 
-   read_csv("HAL/HAL-August-2022.csv") %>% 
-   set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference") 
-
-names(HAL_old)
+# HAL_old <- 
+#    read_csv("HAL/HAL-August-2022.csv") %>% 
+#    set_names("Url", "Title", "Authors", "Type.document", "DOI", "Year", "Journal", "Publisher", "Conference") 
+#names(HAL_old)
 
 HAL <- 
    read_csv("HAL/HAL-Decembre-2023.csv") %>% 
@@ -62,18 +61,16 @@ HAL <-
 
 
 
-# Scimago ----
-## Engineering
-Scimago <- read.csv2("HAL/Scimago/scimagojr_2020.csv") %>%  select(Title, SJR.Best.Quartile, H.index, Categories)
-Scimago <-  Scimago %>% set_names("Journal", "QScimago", "H.Factor", "Categories")
+# Scimago
+## Data from 2022: https://github.com/ikashnitsky/sjrdata
+
+Scimago <- 
+   read.csv2("HAL/Scimago/scimagojr-journal-2022.csv") %>%  
+   select(Title, SJR.Best.Quartile, H.index, Categories) %>% 
+   set_names("Journal", "QScimago", "H.Factor", "Categories")
 Scimago$Journal = tolower(Scimago$Journal)
 
 
-
-## Decision Science
-#DS.Scimago <- read.csv2("HAL/Scimago/Decision-sciences.csv") %>%  select(Title, SJR.Best.Quartile, H.index)
-#DS.Scimago <-  DS.Scimago %>% set_names("Journal", "Scimago<br/>Decision<br/>Sciences", "H.Factor")
-#DS.Scimago$Journal = tolower(DS.Scimago$Journal)
 
 
 # Exporting

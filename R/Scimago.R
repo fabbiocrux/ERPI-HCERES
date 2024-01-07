@@ -69,13 +69,13 @@ Scimago <-
    #                   palette = "Blues",
    #                   direction = -1)  +
    theme_fabio() +
-   coord_cartesian(ylim = c(0, 30)) +
+   coord_cartesian(ylim = c(0, 40)) +
    geom_text(aes(y=Quantity, fill = QScimago, label = Quantity),
              size = 5, 
              position = position_stack(vjust = 0.5),
              color = "black") +
-   geom_segment(aes(x = 2020.7, y = 25, xend = 2021.2, yend = 25),
+   geom_segment(aes(x = 2020.7, y = 35, xend = 2021.2, yend = 35),
                 arrow = arrow(length = unit(0.2, "cm"))) 
 
-#ggsave("Figures/Scimago-December-2023.png", width = 9, height = 6, dpi="print" )
+#ggsave("Figures/Scimago-January-2024.png", width = 9, height = 6, dpi="print" )
 #   my_colors <- RColorBrewer::brewer.pal(6, "Blues")[2:6]
